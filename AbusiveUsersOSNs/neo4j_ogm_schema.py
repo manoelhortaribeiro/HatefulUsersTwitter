@@ -41,5 +41,10 @@ def tweepy2neo4j_user(user, n):
 
 
 def tweepy2neo4j_tweet(tweet):
-    tweet_neo4j = Node("Tweet", id=tweet._json['id'], content=json.dumps(tweet._json))
+    tweet_neo4j = Node("Tweet", content=tweet)
     return tweet_neo4j
+
+
+def tweepy2neo4j_media(media, t_id):
+    media_neo4j = Node("Media", url=media, id=t_id)
+    return media_neo4j
