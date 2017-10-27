@@ -1,4 +1,5 @@
-AbusiveUsersOSNs/secrets.json
-AbusiveUsersOSNs/neo4jsecret.json
+AbusiveUsersOSNs/twitter_crawler/twitter_secrets.json
+AbusiveUsersOSNs/twitter_crawler/twitter_neo4jsecret.json
 .idea/
-
+AbusiveUsersOSNs/__pycache__/
+AbusiveUsersOSNs/twitter_crawler/__pycache__/

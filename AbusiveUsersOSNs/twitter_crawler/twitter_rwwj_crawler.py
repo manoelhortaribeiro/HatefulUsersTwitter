@@ -1,12 +1,16 @@
-from AbusiveUsersOSNs.neo4j_ogm_schema import tweepy2neo4j_tweet, tweepy2neo4j_materialize_user, tweepy2string_tweet
-from AbusiveUsersOSNs.neo4j_ogm_schema import tweepy2neo4j_user, tweepy2neo4j_virtual_user, tweepy2neo4j_media
-from py2neo import Graph, Relationship, NodeSelector
-from urllib.parse import urlparse
-from datetime import datetime
-import random
-import tweepy
 import json
 import os
+import random
+from datetime import datetime
+from urllib.parse import urlparse
+
+import tweepy
+from py2neo import Graph, Relationship, NodeSelector
+
+from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_tweet, tweepy2neo4j_materialize_user, \
+    tweepy2string_tweet
+from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_user, tweepy2neo4j_virtual_user, \
+    tweepy2neo4j_media
 
 
 class MHCrawler:
@@ -35,7 +39,7 @@ class MHCrawler:
 
     @staticmethod
     def control_break():
-        g = open("control.json", 'r')
+        g = open("twitter_rwwj_control.json", 'r')
         control_var = json.load(g)
         g.close()
         if not control_var["continue"]:
@@ -47,7 +51,7 @@ class MHCrawler:
     def control_save(next_node, cont, seed, n):
         tmp = dict()
         tmp["next"], tmp["continue"], tmp["seed"], tmp["n"] = next_node, cont, seed, n
-        g = open("control.json", 'w')
+        g = open("twitter_rwwj_control.json", 'w')
         json.dump(tmp, g)
         g.close()
 
@@ -204,16 +208,16 @@ class MHCrawler:
 
 
 if __name__ == "__main__":
-    f = open("secrets.json", 'r')
+    f = open("twitter_secrets.json", 'r')
     config_tweepy = json.load(f)
     f.close()
 
-    f = open("neo4jsecret.json", 'r')
+    f = open("twitter_neo4jsecret.json", 'r')
     config_neo4j = json.load(f)
     f.close()
 
-    if os.path.exists("control.json"):
-        f = open("control.json", 'r')
+    if os.path.exists("twitter_rwwj_control.json"):
+        f = open("twitter_rwwj_control.json", 'r')
         control = json.load(f)
         f.close()
     else:
