@@ -37,25 +37,26 @@ def tweepy2string_tweet(tweet):
     rt, qt, rp = "retweeted_status" in tweet._json and tweet._json["retweeted_status"] is not None, \
                  "quoted_status" in tweet._json and tweet._json["quoted_status"] is not None, \
                  "in_reply_to_screen_name" in tweet._json and tweet._json["in_reply_to_screen_name"] is not None
-    return "\t".join([str(tweet.id),
-                      str(rem(tweet.full_text)),
-                      str(tweet.created_at.timestamp()),
-                      str(tweet.favorite_count),
-                      str(tweet.retweet_count),
-                      str(rp), str("" if not rp else tweet.in_reply_to_status_id),
-                      str("" if not rp else tweet.in_reply_to_user_id),
-                      str(qt), str("" if not qt else tweet.quoted_status["id"]),
-                      str("" if not qt else tweet.quoted_status["user"]["id"]),
-                      str("" if not qt else rem(tweet.quoted_status["full_text"])),
-                      str("" if not qt else datetime.strptime(tweet.quoted_status["created_at"],
-                                                              "%a %b %d %H:%M:%S %z %Y").timestamp()),
-                      str("" if not qt else tweet.quoted_status["favorite_count"]),
-                      str("" if not qt else tweet.quoted_status["retweet_count"]),
-                      str(rt), str("" if not rt else tweet.retweeted_status.id),
-                      str("" if not rt else tweet.retweeted_status.user.id),
-                      str("" if not rt else tweet.retweeted_status.created_at.timestamp()),
-                      str("" if not rt else tweet.retweeted_status.favorite_count),
-                      str("" if not rt else tweet.retweeted_status.retweet_count)])
+    return ";".join([str(tweet.id),
+                     str("" if rt else rem(tweet.full_text)),
+                     str(tweet.created_at.timestamp()),
+                     str(tweet.favorite_count),
+                     str(tweet.retweet_count),
+                     str(rp), str("" if not rp else tweet.in_reply_to_status_id),
+                     str("" if not rp else tweet.in_reply_to_user_id),
+                     str(qt), str("" if not qt else tweet.quoted_status["id"]),
+                     str("" if not qt else tweet.quoted_status["user"]["id"]),
+                     str("" if not qt else rem(tweet.quoted_status["full_text"])),
+                     str("" if not qt else datetime.strptime(tweet.quoted_status["created_at"],
+                                                             "%a %b %d %H:%M:%S %z %Y").timestamp()),
+                     str("" if not qt else tweet.quoted_status["favorite_count"]),
+                     str("" if not qt else tweet.quoted_status["retweet_count"]),
+                     str(rt), str("" if not rt else tweet.retweeted_status.id),
+                     str("" if not rt else tweet.retweeted_status.user.id),
+                     str("" if not rt else rem(tweet.quoted_status["full_text"])),
+                     str("" if not rt else tweet.retweeted_status.created_at.timestamp()),
+                     str("" if not rt else tweet.retweeted_status.favorite_count),
+                     str("" if not rt else tweet.retweeted_status.retweet_count)])
 
 
 def tweepy2neo4j_user(user, n):

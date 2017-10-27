@@ -100,8 +100,6 @@ class MHCrawler:
             quoted += MHCrawler.get_quoted_users(tweet)
             retweeted += MHCrawler.get_retweeted_users(tweet)
 
-        print(tweets[0])
-        print(urls[0])
         tweet_p = tweepy2neo4j_tweet(tweets)
         self.graph.create(tweet_p)
         self.graph.create(Relationship(user_p, "tweeted", tweet_p))
