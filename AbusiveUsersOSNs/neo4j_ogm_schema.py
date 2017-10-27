@@ -53,7 +53,7 @@ def tweepy2string_tweet(tweet):
                      str("" if not qt else tweet.quoted_status["retweet_count"]),
                      str(rt), str("" if not rt else tweet.retweeted_status.id),
                      str("" if not rt else tweet.retweeted_status.user.id),
-                     str("" if not rt else rem(tweet.quoted_status["full_text"])),
+                     str("" if not rt else rem(tweet.retweeted_status.full_text)),
                      str("" if not rt else tweet.retweeted_status.created_at.timestamp()),
                      str("" if not rt else tweet.retweeted_status.favorite_count),
                      str("" if not rt else tweet.retweeted_status.retweet_count)])
