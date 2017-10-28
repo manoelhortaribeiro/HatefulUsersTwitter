@@ -79,7 +79,7 @@ def tweepy2neo4j_user(user, n):
                       default_profile_image=user.default_profile_image,
                       verified=user.verified,
                       virtual="F",
-                      created_at=user.created_at.timestamp(), n=n)
+                      created_at=user.created_at.timestamp(), number=n)
     return user_neo4j
 
 

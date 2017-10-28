@@ -1,5 +1,8 @@
 AbusiveUsersOSNs/twitter_crawler/twitter_secrets.json
 AbusiveUsersOSNs/twitter_crawler/twitter_neo4jsecret.json
+AbusiveUsersOSNs/twitter_analysis/twitter_neo4jsecret.json
+AbusiveUsersOSNs/twitter_analysis/tweets.csv
+AbusiveUsersOSNs/twitter_analysis/users.graphml
 .idea/
 AbusiveUsersOSNs/__pycache__/
 AbusiveUsersOSNs/twitter_crawler/__pycache__/
