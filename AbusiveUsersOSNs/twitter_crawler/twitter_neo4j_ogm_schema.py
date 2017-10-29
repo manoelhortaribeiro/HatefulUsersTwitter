@@ -29,7 +29,7 @@ def tweepy2neo4j_materialize_user(user_neo4j, user, n):
     user_neo4j["default_profile_image"] = user.default_profile_image
     user_neo4j["verified"] = user.verified
     user_neo4j["virtual"] = "F"
-    user_neo4j["n"] = n
+    user_neo4j["number"] = n
     return user_neo4j
 
 

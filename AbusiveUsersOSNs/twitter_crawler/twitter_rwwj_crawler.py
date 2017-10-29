@@ -34,8 +34,8 @@ class MHCrawler:
         if self.graph.schema.get_uniqueness_constraints("Media") != ["url"]:
             self.graph.schema.create_uniqueness_constraint("Media", "url")
 
-        if "n" not in self.graph.schema.get_indexes("User"):
-            self.graph.schema.create_index("User", "n")
+        if "number" not in self.graph.schema.get_indexes("User"):
+            self.graph.schema.create_index("User", "number")
 
     @staticmethod
     def control_break():
@@ -156,7 +156,8 @@ class MHCrawler:
         print("Walk {0}".format(self.next_node["id"]))
 
     def jump(self):
-        self.next_node = list(self.node_selector.select("User", n=random.randint(1, self.n - 1)))[0]
+        print( list(self.node_selector.select("User", number=random.randint(1, self.n - 1))))
+        self.next_node = list(self.node_selector.select("User", number=random.randint(1, self.n - 1)))[0]
         print("Jump {0}".format(self.next_node["screen_name"]))
 
     def get_adj(self):
@@ -171,38 +172,38 @@ class MHCrawler:
 
         while True:
 
-            try:
-                ts = datetime.now()
+            # try:
+            ts = datetime.now()
 
-                if MHCrawler.control_break():
-                    break
+            if MHCrawler.control_break():
+                break
 
-                if self.next_node["virtual"] == "T":
-                    try:
-                        self.next_node = self.push_node(self.next_node)
-                        print("(Pushed {0}".format(self.next_node["screen_name"]), end=") ")
-                    except tweepy.TweepError as exception:
-                        print(exception)
-                        self.jump()
-                    except IOError as exception:
-                        print(exception)
-                        self.next_node = self.previous_node
-                        continue
-                else:
-                    print("(Existed {0}".format(self.next_node["screen_name"]), end=") ")
+            if self.next_node["virtual"] == "T":
+                try:
+                    self.next_node = self.push_node(self.next_node)
+                    print("(Pushed {0}".format(self.next_node["screen_name"]), end=") ")
+                except tweepy.TweepError as exception:
+                    print(exception)
+                    self.jump()
+                except IOError as exception:
+                    print(exception)
+                    self.next_node = self.previous_node
+                    continue
+            else:
+                print("(Existed {0}".format(self.next_node["screen_name"]), end=") ")
 
-                adj = self.get_adj()
-                print(adj)
-                threshold, rand = self.w / (self.w + len(adj)), random.random()
-                self.previous_node = self.next_node
-                self.jump() if rand < threshold else self.walk(adj)
+            adj = self.get_adj()
+            print(adj)
+            threshold, rand = self.w / (self.w + len(adj)), random.random()
+            self.previous_node = self.next_node
+            self.jump() if rand < threshold else self.walk(adj)
 
-                print("Iter: {0} \t n:{1} \t tr:{2}".format(datetime.now() - ts, self.n, threshold))
-                print("-" * 100)
+            print("Iter: {0} \t n:{1} \t tr:{2}".format(datetime.now() - ts, self.n, threshold))
+            print("-" * 100)
 
-            except Exception as exception:
-                print(exception)
-                MHCrawler.control_save(self.next_node, True, self.seed, self.n)
+            # except Exception as exception:
+            #     print(exception)
+            #     MHCrawler.control_save(self.next_node, True, self.seed, self.n)
 
         MHCrawler.control_save(self.next_node, True, self.seed, self.n)
 
@@ -229,3 +230,5 @@ if __name__ == "__main__":
 
     crawl = MHCrawler(config_tweepy, config_neo4j, control["n"], control["seed"], control["next"])
     crawl.run()
+
+
