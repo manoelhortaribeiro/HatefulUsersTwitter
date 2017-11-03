@@ -23,6 +23,7 @@ for line in csv_writer:
     if text is not None or retweet is not None or quote is not None:
         set_users[line["user_id"]] = True
 
-nx_graph = nx.read_graphml("./users2.graphml")
+nx_graph = nx.read_graphml("./users.graphml")
+nx_graph = nx_graph.reverse(copy=False)
 nx.set_node_attributes(nx_graph, name="slur", values=set_users)
 nx.write_graphml(nx_graph, "./users_infected.graphml")

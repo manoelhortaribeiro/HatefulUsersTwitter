@@ -19,6 +19,4 @@ for node in graph.data(
 
 nx.write_graphml(nx_graph, "./users.graphml")
 
-# perl -CSDA -pe'
-#    s/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]+//g;
-# ' file.xml > file_fixed.xml
+# perl -CSDA -pe 's/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]+//g;' user.graphml > user.graphml
