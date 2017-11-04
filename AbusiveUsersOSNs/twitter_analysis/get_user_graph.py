@@ -14,7 +14,7 @@ for node in graph.data("""MATCH (a:User) WHERE a.virtual="F" RETURN a as val""")
     nx_graph.add_node(n["id"], **n)
 
 for node in graph.data(
-        """MATCH (a:User)-->(b:User) WHERE a.virtual="F" AND b.virtual="F" RETURN a.id as a, b.id as b"""):
+        """MATCH (a:User)-[:retweeted]->(b:User) WHERE a.virtual="F" AND b.virtual="F" RETURN a.id as a, b.id as b"""):
     nx_graph.add_edge(node['a'], node['b'])
 
 nx.write_graphml(nx_graph, "./users.graphml")

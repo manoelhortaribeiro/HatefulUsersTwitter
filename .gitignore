@@ -1,9 +1,9 @@
 AbusiveUsersOSNs/twitter_analysis/twitter_neo4jsecret.json
 AbusiveUsersOSNs/twitter_crawler/twitter_neo4jsecret.json
-AbusiveUsersOSNs/twitter_analysis/users_infected_diffusion.graphml
+AbusiveUsersOSNs/twitter_analysis/users_infected_diffusion*
 AbusiveUsersOSNs/twitter_analysis/users_infected.graphml
 AbusiveUsersOSNs/twitter_crawler/twitter_secrets.json
 AbusiveUsersOSNs/twitter_analysis/users.graphml
-AbusiveUsersOSNs/twitter_analysis/users2.graphml
+AbusiveUsersOSNs/twitter_analysis/users_to_annotate.csv
 AbusiveUsersOSNs/twitter_analysis/tweets.csv
 .idea/

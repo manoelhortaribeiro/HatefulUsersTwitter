@@ -14,13 +14,13 @@ csv_writer = csv.writer(f)
 csv_writer.writerow(["user_id", "screen_name",
                      "tweet_id", "tweet_text", "tweet_creation", "tweet_fav", "tweet_rt",
                      "rp_flag", "rp_status", "rp_user",
-                     "qt_flag", "qt_user_id", "qt_status_id", "qt_text", "qt_creation", "qt_fav",  "qt_rt",
+                     "qt_flag", "qt_user_id", "qt_status_id", "qt_text", "qt_creation", "qt_fav", "qt_rt",
                      "rt_flag", "rt_user_id", "rt_status_id", "rt_text", "rt_creation", "rt_fav", "rt_rt"])
 
 q = """MATCH (u:User) where u.virtual="F" return count(u) as number"""
 df = graph.data(q)
 max_entries = df[0]["number"]
-aux = (list(range(max_entries,0,-10000)) + [0])[::-1]
+aux = (list(range(max_entries, 0, -10000)) + [0])[::-1]
 ranges = zip(aux[:-1], aux[1:])
 
 for lower, upper in ranges:

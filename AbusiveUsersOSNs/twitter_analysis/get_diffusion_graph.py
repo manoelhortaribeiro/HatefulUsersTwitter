@@ -1,10 +1,10 @@
-import networkx as nx
 import numpy as np
+import networkx as nx
 
 """ This implements the a diffusion based on DeGroot's model proposed by Golub & Jackson (2010). """
 
 initial_belief = 1
-k = 2
+k = 1
 
 np.random.seed(1)
 graph = nx.read_graphml("./users_infected.graphml")
@@ -35,4 +35,4 @@ for node, belief in zip(node_list, beliefs):
     final_beliefs_dict[node] = float(belief)
 
 nx.set_node_attributes(graph, name="diffusion_slur", values=final_beliefs_dict)
-nx.write_graphml(graph, "./users_infected_diffusion.graphml")
+nx.write_graphml(graph, "./users_infected_diffusion{0}.graphml".format(k))
