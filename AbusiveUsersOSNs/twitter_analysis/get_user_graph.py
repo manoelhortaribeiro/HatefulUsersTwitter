@@ -12,6 +12,7 @@ graph = Graph(config_neo4j["host"], password=config_neo4j["password"])
 for node in graph.data("""MATCH (a:User) WHERE a.virtual="F" RETURN a as val"""):
     n = dict(node["val"])
     nx_graph.add_node(n["id"], **n)
+    nx_graph.add_edge(n["id"], n["id"])
 
 for node in graph.data(
         """MATCH (a:User)-[:retweeted]->(b:User) WHERE a.virtual="F" AND b.virtual="F" RETURN a.id as a, b.id as b"""):
