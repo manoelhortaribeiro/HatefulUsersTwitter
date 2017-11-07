@@ -1,9 +1,11 @@
-AbusiveUsersOSNs/twitter_analysis/twitter_neo4jsecret.json
+AbusiveUsersOSNs/twitter_processing/twitter_neo4jsecret.json
 AbusiveUsersOSNs/twitter_crawler/twitter_neo4jsecret.json
-AbusiveUsersOSNs/twitter_analysis/users_infected_diffusion*
-AbusiveUsersOSNs/twitter_analysis/users_infected.graphml
+AbusiveUsersOSNs/twitter_processing/users_infected_diffusion1.graphml
+AbusiveUsersOSNs/twitter_processing/users_infected.graphml
 AbusiveUsersOSNs/twitter_crawler/twitter_secrets.json
-AbusiveUsersOSNs/twitter_analysis/users.graphml
-AbusiveUsersOSNs/twitter_analysis/users_to_annotate.csv
-AbusiveUsersOSNs/twitter_analysis/tweets.csv
+AbusiveUsersOSNs/twitter_processing/users.graphml
+AbusiveUsersOSNs/twitter_processing/users_to_annotate.csv
+AbusiveUsersOSNs/twitter_processing/tweets.csv
+AbusiveUsersOSNs/twitter_processing/annotated.csv
+.ipynb_checkpoints
 .idea/
