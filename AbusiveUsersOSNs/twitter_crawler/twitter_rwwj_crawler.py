@@ -39,7 +39,7 @@ class MHCrawler:
 
     @staticmethod
     def control_break():
-        g = open("twitter_rwwj_control.json", 'r')
+        g = open("../secrets/twitter_rwwj_control.json", 'r')
         control_var = json.load(g)
         g.close()
         if not control_var["continue"]:
@@ -51,7 +51,7 @@ class MHCrawler:
     def control_save(next_node, cont, seed, n):
         tmp = dict()
         tmp["next"], tmp["continue"], tmp["seed"], tmp["n"] = next_node, cont, seed, n
-        g = open("twitter_rwwj_control.json", 'w')
+        g = open("../secrets/twitter_rwwj_control.json", 'w')
         json.dump(tmp, g)
         g.close()
 
@@ -209,16 +209,16 @@ class MHCrawler:
 
 
 if __name__ == "__main__":
-    f = open("twitter_secrets.json", 'r')
+    f = open("../secrets/twitter_secrets.json", 'r')
     config_tweepy = json.load(f)
     f.close()
 
-    f = open("twitter_neo4jsecret.json", 'r')
+    f = open("../secrets/twitter_neo4jsecret.json", 'r')
     config_neo4j = json.load(f)
     f.close()
 
     if os.path.exists("twitter_rwwj_control.json"):
-        f = open("twitter_rwwj_control.json", 'r')
+        f = open("../secrets/twitter_rwwj_control.json", 'r')
         control = json.load(f)
         f.close()
     else:

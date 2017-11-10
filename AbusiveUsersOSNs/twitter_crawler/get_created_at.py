@@ -10,14 +10,14 @@ def get_tweepy(accs, val):
     oauth.set_access_token(auth["access_token"], auth["access_secret"])
     return tweepy.API(oauth)
 
-f = open("twitter_secrets.json", 'r')
+f = open("../secrets/twitter_secrets.json", 'r')
 tweepy_auth = json.load(f)
 accounts = list(tweepy_auth.items())
 f.close()
 
 curr_account = 0
 all_accs = 5
-df = pd.read_csv("./annotated.csv")
+df = pd.read_csv("../data/annotated.csv")
 ids = df.user_id.values
 crawl = get_tweepy(accounts, curr_account)
 
@@ -46,7 +46,7 @@ for user_id in ids:
                 break
 
 
-f = open("./created_at.csv", "w")
+f = open("../data/created_at.csv", "w")
 csv_writer = csv.writer(f)
 
 csv_writer.writerow(["user_id", "created_at"])

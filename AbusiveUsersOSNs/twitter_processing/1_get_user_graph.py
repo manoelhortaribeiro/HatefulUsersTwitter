@@ -4,7 +4,7 @@ import json
 
 nx_graph = nx.DiGraph()
 
-f = open("./twitter_neo4jsecret.json", 'r')
+f = open("../secrets/twitter_neo4jsecret.json", 'r')
 config_neo4j = json.load(f)
 f.close()
 graph = Graph(config_neo4j["host"], password=config_neo4j["password"])
@@ -18,6 +18,8 @@ for node in graph.data(
         """MATCH (a:User)-[:retweeted]->(b:User) WHERE a.virtual="F" AND b.virtual="F" RETURN a.id as a, b.id as b"""):
     nx_graph.add_edge(node['a'], node['b'])
 
-nx.write_graphml(nx_graph, "./users.graphml")
+nx.write_graphml(nx_graph, "../data/users.graphml")
 
-# perl -CSDA -pe 's/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]+//g;' user.graphml > user.graphml
+# perl -CSDA -pe 's/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]+//g;' ../data/users.graphml > ../data/users2.graphml
+# rm ../data/users.graphml
+# mv ../data/users2.graphml ../data/users.graphml

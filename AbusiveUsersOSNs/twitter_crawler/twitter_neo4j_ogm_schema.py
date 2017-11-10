@@ -27,6 +27,7 @@ def tweepy2neo4j_materialize_user(user_neo4j, user, n):
     user_neo4j["default_profile"] = user.default_profile
     user_neo4j["geo_enabled"] = user.geo_enabled
     user_neo4j["default_profile_image"] = user.default_profile_image
+    user_neo4j["created_at"] = user.created_at.timestamp()
     user_neo4j["verified"] = user.verified
     user_neo4j["virtual"] = "F"
     user_neo4j["number"] = n

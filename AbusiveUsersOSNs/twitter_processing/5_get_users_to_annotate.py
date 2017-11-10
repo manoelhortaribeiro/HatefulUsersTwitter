@@ -1,14 +1,14 @@
 import networkx as nx
 import numpy as np
-import csv
 import random
+import csv
 
 np.random.seed(1234)
 random.seed(1234)
 
 N = 6000
 
-nx_graph = nx.read_graphml("./users_infected_diffusion1.graphml")
+nx_graph = nx.read_graphml("../data/users_infected_diffusion1.graphml")
 
 diffusion_slur = nx.get_node_attributes(nx_graph, name="diffusion_slur")
 
@@ -42,7 +42,7 @@ sample_strata2 = np.random.choice(strata2, size=int(N / 4), replace=False)
 
 sample_strata3 = np.random.choice(strata3, size=int(N / 4), replace=False)
 
-f = open("./users_to_annotate.csv", "w")
+f = open("../data/users_to_annotate.csv", "w")
 
 csv_writer = csv.writer(f)
 
@@ -66,4 +66,5 @@ random.shuffle(sample)
 for row in sample:
     csv_writer.writerow(row)
 f.close()
+
 # starts with 24075855,roopikarisam,https://twitter.com/roopikarisam,0.0,1

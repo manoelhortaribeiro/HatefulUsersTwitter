@@ -3,11 +3,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
-# plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
 
+plt.rc('font', family='serif')
 sns.set(style="whitegrid", font="serif")
 
+# This is in case created_at2.csv is not generated
 # df1 = pd.read_csv("./created_at.csv")
 # df2 = pd.read_csv("./users_attributes.csv")
 # hateful = dict()
@@ -49,26 +49,3 @@ axs.set_yticklabels(["normal", "hateful"], rotation=20)
 f.tight_layout()
 
 f.savefig("created_at.pdf")
-#
-# axs = zip(*axs)
-# attributes = ["statuses_count", "followers_count", "followees_count", "favorites_count", "listed_count"]
-# titles = ["#statuses", "#followers", "#followees", "#favorites", "#listed"]
-#
-#
-# for axis, attribute, title in zip(axs, attributes, titles):
-#     sns.barplot(x="hate", y=attribute,  ax=axis[0], data=df, estimator=np.average, ci=95)
-#     axis[0].set_xlabel("")
-#     axis[0].set_ylabel("")
-#     axis[0].set_title(title)
-#
-#     axis[0].set_xticks([])
-#     sns.boxplot(x="hate", y=attribute, data=df, ax=axis[1],  showfliers=False)
-#     axis[1].set_ylabel("")
-#     axis[1].set_xlabel("")
-#     axis[1].set_yscale("log")
-#     axis[1].set_xticks([0 ,1], ["normal", "hateful"])
-#
-#
-# f.tight_layout()
-#
-# f.savefig("attributes.pdf")
