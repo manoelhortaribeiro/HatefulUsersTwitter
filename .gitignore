@@ -5,7 +5,7 @@ AbusiveUsersOSNs/data/users_infected.graphml
 users_hate.graphml
 AbusiveUsersOSNs/data/users.graphml
 AbusiveUsersOSNs/data/users_to_annotate.csv
-annotated.csv
+AbusiveUsersOSNs/data/annotated.csv
 tweets.csv
 .ipynb_checkpoints
 .idea/
