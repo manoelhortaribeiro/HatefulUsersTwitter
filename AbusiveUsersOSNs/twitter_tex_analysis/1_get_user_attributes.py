@@ -89,10 +89,8 @@ cols = ["user_id", "screen_name", "tweet_id", "tweet_text", "tweet_creation", "t
 csv_dict_reader = csv.DictReader(f)
 
 iter_vals, count, count_max, last_u, v = 1, 0, 100000, None, []
-
 for line in csv_dict_reader:
     if last_u is not None and last_u != line["user_id"]:
-        processing(v, cols, iter_vals)
         count, last_u, v = 0, None, []
         iter_vals += 1
 

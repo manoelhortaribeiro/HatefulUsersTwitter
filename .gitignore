@@ -6,11 +6,13 @@ AbusiveUsersOSNs/data/users_to_annotate.csv
 AbusiveUsersOSNs/data/users_attributes.csv
 AbusiveUsersOSNs/data/created_at_hate.csv
 AbusiveUsersOSNs/data/users_hate.graphml
+AbusiveUsersOSNs/data/users_content.csv
 AbusiveUsersOSNs/data/created_at.csv
 AbusiveUsersOSNs/data/time_diff.csv
 AbusiveUsersOSNs/data/annotated.csv
 AbusiveUsersOSNs/data/users.graphml
 AbusiveUsersOSNs/data/tweets.csv
+AbusiveUsersOSNs/data/tmp/*
 .ipynb_checkpoints
 __pycache__/
 .idea/
