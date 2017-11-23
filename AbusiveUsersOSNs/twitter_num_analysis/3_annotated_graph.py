@@ -64,12 +64,10 @@ betweenness = nx.betweenness_centrality(nx_graph, k=2, normalized=False)
 eigenvector = nx.eigenvector_centrality(nx_graph)
 in_degree = nx.in_degree_centrality(nx_graph)
 out_degree = nx.out_degree_centrality(nx_graph)
-out_degree = nx.out_degree_centrality(nx_graph)
 
 nx.set_node_attributes(nx_graph, name="betweenness", values=betweenness)
 nx.set_node_attributes(nx_graph, name="eigenvector", values=eigenvector)
 nx.set_node_attributes(nx_graph, name="in_degree", values=in_degree)
 nx.set_node_attributes(nx_graph, name="out_degree", values=out_degree)
-
 
 nx.write_graphml(nx_graph, "../data/users_hate.graphml")

@@ -1,16 +1,14 @@
-import json
 import os
+import json
 import random
+import tweepy
 from datetime import datetime
 from urllib.parse import urlparse
-
-import tweepy
 from py2neo import Graph, Relationship, NodeSelector
-
-from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_tweet, tweepy2neo4j_materialize_user, \
-    tweepy2string_tweet
-from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_user, tweepy2neo4j_virtual_user, \
-    tweepy2neo4j_media
+from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_tweet, tweepy2string_tweet
+from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_materialize_user
+from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_user, tweepy2neo4j_virtual_user
+from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_media
 
 
 class MHCrawler:
@@ -156,7 +154,7 @@ class MHCrawler:
         print("Walk {0}".format(self.next_node["id"]))
 
     def jump(self):
-        print( list(self.node_selector.select("User", number=random.randint(1, self.n - 1))))
+        print(list(self.node_selector.select("User", number=random.randint(1, self.n - 1))))
         self.next_node = list(self.node_selector.select("User", number=random.randint(1, self.n - 1)))[0]
         print("Jump {0}".format(self.next_node["screen_name"]))
 
@@ -230,5 +228,3 @@ if __name__ == "__main__":
 
     crawl = MHCrawler(config_tweepy, config_neo4j, control["n"], control["seed"], control["next"])
     crawl.run()
-
-

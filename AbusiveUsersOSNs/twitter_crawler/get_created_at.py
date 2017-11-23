@@ -45,7 +45,6 @@ for user_id in ids:
             if exc.api_code == 50 or exc.api_code == 63:
                 break
 
-
 f = open("../data/created_at.csv", "w")
 csv_writer = csv.writer(f)
 
@@ -55,4 +54,3 @@ for key in creation_time.keys():
     csv_writer.writerow([key, creation_time[key].timestamp()])
 
 f.close()
-

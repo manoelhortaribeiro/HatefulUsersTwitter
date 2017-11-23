@@ -12,13 +12,14 @@ def formatter(x, pos):
     if x == 0:
         return 0
     if x >= 100:
-        return "{0}K".format(round(x/1000, 2))
+        return "{0}K".format(round(x / 1000, 2))
     if x < 1:
         val = math.ceil(abs(np.log10(x)))
         number = int(x * 10 ** val)
         return "${" + str(number) + "}" + "*10^{-" + str(val) + "}$"
     else:
         return x
+
 
 form = FuncFormatter(formatter)
 
@@ -30,16 +31,14 @@ color_mine = ["#F8414A", "#FD878D", "#385A89", "#5676A1", ]
 df = pd.read_csv("../data/users_attributes.csv")
 df = df[df.hate != "other"]
 
-
 f, axzs = plt.subplots(2, 5, figsize=(10.8, 4))
 
-
 attributes_all = [["statuses_count", "followers_count", "followees_count",
-               "favorites_count", "betweenness"],
-              ["median_int", "average_int", "eigenvector", "in_degree", "out_degree"]]
+                   "favorites_count", "betweenness"],
+                  ["median_int", "average_int", "eigenvector", "in_degree", "out_degree"]]
 
 titles_all = [["\#statuses", "\#followers", "\#followees", "\#favorites", "betweenness"],
-          ["avg(interval)", "median(interval)", "eigenvector", "in degree", "out degree"]]
+              ["avg(interval)", "median(interval)", "eigenvector", "in degree", "out degree"]]
 
 for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
@@ -73,12 +72,10 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.set_ylabel("")
         axis.set_xlabel("")
 
-
-f.legend( (rects[0], rects[1], rects[2], rects[3]),
-          ("Hateful Users", "Hateful Neighborhood","Normal Users", "Normal Neighborhood"),
-          loc='upper center',
-          fancybox=True, shadow=True, ncol=4)
+f.legend((rects[0], rects[1], rects[2], rects[3]),
+         ("Hateful Users", "Hateful Neighborhood", "Normal Users", "Normal Neighborhood"),
+         loc='upper center',
+         fancybox=True, shadow=True, ncol=4)
 f.tight_layout(rect=[0, 0, 1, .95])
-
 
 f.savefig("../imgs/attributes.pdf")

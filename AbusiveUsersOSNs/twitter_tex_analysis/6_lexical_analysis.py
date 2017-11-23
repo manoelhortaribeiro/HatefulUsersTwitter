@@ -33,4 +33,4 @@ for empath, axis in zip(empaths, axises):
         count += 1
 
 f.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
-f.savefig("../imgs/lexical.pdf")
+f.savefig("../imgs/lexical_dist.pdf")
