@@ -25,7 +25,7 @@ df = df[df.hate != "other"]
 cols_attr = ["statuses_count", "followers_count", "followees_count", "favorites_count", "listed_count", "median_int",
              "average_int", "betweenness", "eigenvector", "in_degree", "out_degree", "sentiment"]
 
-cols_glove = ["{0}_glove".format(v) for v in range(384)]
+cols_glove = ["{0}_glove".format(v) for v in range(300)]
 
 cols_empath = [
     "traveling_empath", "fashion_empath", "sadness_empath", "fun_empath",

@@ -31,15 +31,18 @@ color_mine = ["#F8414A", "#FD878D", "#385A89", "#5676A1", ]
 df = pd.read_csv("../data/users_all.csv")
 df = df[df.hate != "other"]
 
-f, axzs = plt.subplots(2, 6, figsize=(10.8, 4))
+f, axzs = plt.subplots(3, 8, figsize=(10.8, 6))
 
-attributes_all = [["sadness_empath", "fear_empath", "swearing_terms_empath",
-                   "independence_empath", "positive_emotion_empath", "nervousness_empath"],
-                  ["deception_empath", "government_empath", "help_empath",
-                   "alcohol_empath", "ridicule_empath", "warmth_empath"]]
+attributes_all = [["sadness_empath", "fear_empath", "swearing_terms_empath", "independence_empath",
+                   "positive_emotion_empath", "negative_emotion_empath", "government_empath", "love_empath"],
+                  ["warmth_empath", "ridicule_empath", "masculine_empath", "feminine_empath",
+                   "violence_empath", "suffering_empath", "dispute_empath", "anger_empath"],
+                  ["envy_empath", "work_empath", "achievement_empath", "politics_empath",
+                   "terrorism_empath", "shame_empath", "confusion_empath", "hate_empath"]]
 
-titles_all = [["Sadness", "Fear", "Swearing", "Independence", "Positive Emotions", "Nervousness"],
-              ["Deception", "Government", "Help", "Alcohol", "Ridicule", "Warmth"]]
+titles_all = [["Sadness", "Fear", "Swearing", "Independence", "Pos. Emotions", "Neg. Emotions", "Government", "Love"],
+              ["Warmth", "Ridicule", "Masculine", "Feminine", "Violence", "Suffering", "Dispute", "Anger"],
+              ["Envy", "Work", "Achievement", "Politics", "Terrorism", "Shame", "Confusion", "Hate"]]
 
 for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 

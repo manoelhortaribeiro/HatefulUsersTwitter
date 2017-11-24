@@ -77,6 +77,7 @@ def processing(vals, columns, iterv):
     # MERGE TO SINGLE
 
     df = pd.DataFrame(pd.concat([df_empath, df_sentiment, df_glove], axis=1))
+    df.set_index("user_id", inplace=True)
     df.to_csv("../data/tmp/users_content_{0}.csv".format(iterv))
     print("-------------{0}".format(iterv))
 
