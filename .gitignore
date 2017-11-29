@@ -1,7 +1,7 @@
-AbusiveUsersOSNs/secrets/twitter_neo4jsecret.json
-AbusiveUsersOSNs/secrets/twitter_secrets.json
-AbusiveUsersOSNs/data/*
-AbusiveUsersOSNs/imgs/*
+LikeSheepsAmongWolves/secrets/twitter_neo4jsecret.json
+LikeSheepsAmongWolves/secrets/twitter_secrets.json
+LikeSheepsAmongWolves/data/*
+LikeSheepsAmongWolves/imgs/*
 .ipynb_checkpoints
 __pycache__/
 .idea/

@@ -17,11 +17,11 @@ men = [df[df.hate == "hateful"],
        df[df.hate == "normal"],
        df[df.normal_neigh]]
 
-titles = ["Hateful Users", "Hateful Neighborhood","Normal Users", "Normal Neighborhood"]
+titles = ["Hateful Users", "Hateful Neighborhood", "Normal Users", "Normal Neighborhood"]
 
 for category, title, color in zip(men, titles, color_mine):
-    sns.distplot(category["sentiment"], ax=axis[0], color=color, norm_hist=True, hist=False)
-    sns.distplot(category["subjectivity"], ax=axis[1], color=color, norm_hist=True, hist=False)
+    sns.distplot(category["sentiment"], ax=axis[0], color=color, norm_hist=True)
+    sns.distplot(category["subjectivity"], ax=axis[1], color=color, norm_hist=True)
 
 axis[0].set_title("Sentiment")
 axis[1].set_title("Subjectivity")

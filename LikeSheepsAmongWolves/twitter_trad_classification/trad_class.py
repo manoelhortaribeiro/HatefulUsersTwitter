@@ -2,14 +2,14 @@ from sklearn.model_selection import StratifiedKFold, LeaveOneOut
 from sklearn.neural_network import MLPClassifier
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.svm import SVC, LinearSVC
 from sklearn.linear_model import SGDRegressor
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier, BaggingClassifier, RandomForestClassifier
-
 from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report, recall_score, f1_score, accuracy_score
-from sklearn.preprocessing import Normalizer, MinMaxScaler
+from sklearn.preprocessing import Normalizer, MinMaxScaler,StandardScaler
 import pandas as pd
 import itertools
 import numpy as np
@@ -23,7 +23,10 @@ df.fillna(0, inplace=True)
 df = df[df.hate != "other"]
 
 cols_attr = ["statuses_count", "followers_count", "followees_count", "favorites_count", "listed_count", "median_int",
-             "average_int", "betweenness", "eigenvector", "in_degree", "out_degree", "sentiment"]
+             "average_int", "betweenness", "eigenvector", "in_degree", "out_degree", "sentiment",
+             "number hashtags", "tweet number", "retweet number", "quote number", "status length",
+             "number urls", "baddies",
+             "mentions"]
 
 cols_glove = ["{0}_glove".format(v) for v in range(300)]
 
@@ -65,56 +68,65 @@ cols_empath = [
     "ship_empath", "religion_empath", "tourism_empath", "power_empath"]
 
 y = np.array([1 if v == "hateful" else 0 for v in df["hate"].values])
-pca = PCA(n_components=25)
 
+X_all = np.array(df[cols_attr + cols_glove].values).reshape(-1, len(cols_attr + cols_glove))
 X_attr = np.array(df[cols_attr].values).reshape(-1, len(cols_attr))
 X_glove = np.array(df[cols_glove].values).reshape(-1, len(cols_glove))
 X_empath = np.array(df[cols_empath].values).reshape(-1, len(cols_empath))
 
-scaling = MinMaxScaler().fit(X_attr)
-X_attr = scaling.transform(X_attr)
+scaling = StandardScaler().fit(X_all)
+X_all = scaling.transform(X_all)
+# X_all = pca.fit_transform(X_all)
 
-scaling = MinMaxScaler().fit(X_glove)
-# X_glove = scaling.transform(X_glove)
+scaling = StandardScaler().fit(X_attr)
+# X_attr = scaling.transform(X_attr)
+
+# pca = PCA(n_components=50)
+scaling = StandardScaler().fit(X_glove)
+X_glove = scaling.transform(X_glove)
 # X_glove = pca.fit_transform(X_glove)
 
-scaling = MinMaxScaler().fit(X_empath)
-# X_empath = scaling.transform(X_empath)
+scaling = StandardScaler().fit(X_empath)
+X_empath = scaling.transform(X_empath)
 # X_empath = pca.fit_transform(X_empath)
 
 X = np.concatenate((X_attr, X_empath, X_glove), axis=1)
-scaling = MinMaxScaler().fit(X)
-X = scaling.transform(X)
+
 
 accuracy = []
 recall = []
 f1 = []
 # print(len(X))
 
-skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
+skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=1)
 skf.get_n_splits(X_attr, y)
 
 for train_index, test_index in skf.split(X, y):
     X_attr_train, X_attr_test = X_attr[train_index], X_attr[test_index]
     X_glove_train, X_glove_test = X_glove[train_index], X_glove[test_index]
     X_empath_train, X_empath_test = X_empath[train_index], X_empath[test_index]
+    X_all_train, X_all_test = X_all[train_index], X_all[test_index]
     y_train, y_test = y[train_index], y[test_index]
 
-    nb = GaussianNB()
+    nb = LinearSVC(class_weight={1: 9, 0: 1}, penalty='l1', dual=False, C=1)
 
-    nb.fit(X_attr_train, y_train)
-    y_attr = nb.predict_proba(X_attr_test)
+    nb.fit(X_all_train, y_train)
+    y_all = nb.predict(X_all_test)
 
-    nb.fit(X_glove_train, y_train)
-    y_glove = nb.predict_proba(X_glove_test)
+    # nb.fit(X_attr_train, y_train)
+    # y_attr = nb.predict_proba(X_attr_test)
+    #
+    # nb.fit(X_glove_train, y_train)
+    # y_glove = nb.predict_proba(X_glove_test)
+    #
+    # nb.fit(X_empath_train, y_train)
+    # y_empath = nb.predict_proba(X_empath_test)
 
-    nb.fit(X_empath_train, y_train)
-    y_empath = nb.predict_proba(X_empath_test)
-
-    y_pred = y_attr
-    final = (np.array(y_attr) + np.array(y_empath)) / 3
-    final = np.argmax(final, axis=1)
-    y_pred = final
+    # final = (np.array(y_attr).astype(float) + np.array(y_glove).astype(float).astype(float))/2
+    # final = np.argmax(final, axis=1)
+    # y_pred = (final > 0.5).astype(int)
+    y_pred = y_all
+    # print(final.shape, y_pred.shape)
 
     accuracy.append(accuracy_score(y_test, y_pred))
     recall.append(recall_score(y_test, y_pred, labels=[1], pos_label=1))

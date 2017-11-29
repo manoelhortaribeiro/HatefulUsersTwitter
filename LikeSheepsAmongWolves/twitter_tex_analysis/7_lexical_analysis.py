@@ -69,7 +69,7 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
         ind = np.array([0, 1, 2, 3])
         width = .8
-        rects = axis.bar(ind, medians, width, yerr=medians_ci, color=color_mine, ecolor="#46495C")
+        rects = axis.bar(ind, averages, width, yerr=medians_ci, color=color_mine, ecolor="#46495C")
         axis.yaxis.set_major_formatter(form)
         axis.set_xticks([])
         axis.set_title(title)

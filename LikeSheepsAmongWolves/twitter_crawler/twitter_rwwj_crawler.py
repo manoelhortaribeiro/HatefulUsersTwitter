@@ -5,10 +5,10 @@ import tweepy
 from datetime import datetime
 from urllib.parse import urlparse
 from py2neo import Graph, Relationship, NodeSelector
-from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_tweet, tweepy2string_tweet
-from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_materialize_user
-from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_user, tweepy2neo4j_virtual_user
-from AbusiveUsersOSNs.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_media
+from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_tweet, tweepy2string_tweet
+from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_materialize_user
+from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_user, tweepy2neo4j_virtual_user
+from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_media
 
 
 class MHCrawler:
