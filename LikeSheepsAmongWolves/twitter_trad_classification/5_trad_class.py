@@ -8,11 +8,12 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import classification_report, recall_score, f1_score, accuracy_score
+from sklearn.metrics import classification_report, recall_score, precision_score, accuracy_score, roc_curve, auc
 from sklearn.preprocessing import Normalizer, MinMaxScaler, StandardScaler
 import pandas as pd
 import itertools
 import numpy as np
+from scipy import interp
 import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.metrics import confusion_matrix
@@ -27,7 +28,9 @@ cols_attr = ["statuses_count", "followers_count", "followees_count", "favorites_
              "number hashtags", "tweet number", "retweet number", "quote number", "status length",
              "number urls", "baddies",
              "mentions"]
+
 cols_glove = ["{0}_glove".format(v) for v in range(300)]
+
 cols_empath = [
     "traveling_empath", "fashion_empath", "sadness_empath", "fun_empath",
     "noise_empath", "phone_empath", "cold_empath", "driving_empath", "love_empath", "weather_empath",
@@ -68,44 +71,81 @@ cols_empath = [
 y = np.array([1 if v == "hateful" else 0 for v in df["hate"].values])
 
 cols = cols_attr + cols_glove
-# cols += ["c_" + v for v in cols]
+cols += ["c_" + v for v in cols]
 
 X_all = np.array(df[cols].values).reshape(-1, len(cols))
 
-pca = PCA(n_components=40)
+pca = PCA(n_components=75)
 scaling = StandardScaler().fit(X_all)
 X_all = scaling.transform(X_all)
 X_pca = X_all
 X_pca = pca.fit_transform(X_all)
-original_params = {'n_estimators': 100, 'max_leaf_nodes': 4, 'max_depth': 4,
-                   'random_state': 2, 'min_samples_split': 5, "subsample": .8}
+original_params = {'n_estimators': 400,
+                   'max_leaf_nodes': 8,
+                   'max_depth': None,
+                   'learning_rate': 0.01,
+                   'random_state': 2,
+                   'min_samples_split': 3,
+                   'subsample': 1}
 
-accuracy, recall, f1 = [], [], []
+accuracy, recall, f1, tprs, aucs = [], [], [], [], []
 
 skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=1)
+mean_fpr = np.linspace(0, 1, 100)
 
+
+i = 1
 for train_index, test_index in skf.split(X_all, y):
     X_all_train, X_all_test = X_pca[train_index], X_pca[test_index]
     y_train, y_test = y[train_index], y[test_index]
 
-    nb = GradientBoostingClassifier(**original_params)
+    # nb = GradientBoostingClassifier(**original_params)
 
-    # nb = LinearSVC(class_weight={1: 32, 0: 1}, penalty='l2', dual=True, C=0.5)
+    nb = LinearSVC(penalty='l2', dual=True, C=0.5)
 
-    weights = [18 if v == 1 else 1 for v in y_train]
-    print(weights)
+    weights = [30 if v == 1 else 1 for v in y_train]
 
     nb.fit(X_all_train, y_train, sample_weight=weights)
     y_all = nb.predict(X_all_test)
 
     y_pred = y_all
+    fpr, tpr, _ = roc_curve(y_test, y_pred)
+    roc_auc = auc(fpr, tpr)
+    tprs.append(interp(mean_fpr, fpr, tpr))
+    aucs.append(roc_auc)
 
     accuracy.append(accuracy_score(y_test, y_pred))
     recall.append(recall_score(y_test, y_pred, labels=[1], pos_label=1))
-    f1.append(f1_score(y_test, y_pred, pos_label=1))
-    class_report = classification_report(y_test, y_pred)
+    f1.append(precision_score(y_test, y_pred, labels=[1], pos_label=1))
     cnf_matrix = confusion_matrix(y_test, y_pred)
+
+    plt.plot(fpr, tpr, lw=1, alpha=0.3,
+             label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
     print(cnf_matrix)
+    i += 1
+
+mean_tpr = np.mean(tprs, axis=0)
+mean_tpr[-1] = 1.0
+mean_auc = auc(mean_fpr, mean_tpr)
+std_auc = np.std(aucs)
+plt.plot(mean_fpr, mean_tpr, color='b',
+         label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc),
+         lw=2, alpha=.8)
+
+std_tpr = np.std(tprs, axis=0)
+tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
+                 label=r'$\pm$ 1 std. dev.')
+
+plt.xlim([-0.05, 1.05])
+plt.ylim([-0.05, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver operating characteristic example')
+plt.legend(loc="lower right")
+plt.show()
+
 
 recall = np.array(recall)
 f1 = np.array(f1)
