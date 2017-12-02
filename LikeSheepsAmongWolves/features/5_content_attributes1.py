@@ -18,6 +18,7 @@ def mentions(tweets):
 
     return len(ments)
 
+
 def bad_words(tweets):
     baddies = []
     for tweet in tweets.values:
