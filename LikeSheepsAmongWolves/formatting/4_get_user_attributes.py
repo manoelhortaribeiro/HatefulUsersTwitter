@@ -25,10 +25,12 @@ for user_id in hate.keys():
 
     if hate[user_id] == 1:
         hateful = "hateful"
+
     elif hate[user_id] == 0:
         hateful = "normal"
 
     median_int = None if user_id not in median_interval else median_interval[user_id]
+
     average_int = None if user_id not in average_interval else average_interval[user_id]
 
     users.append((user_id, hateful, hate_n[user_id], normal_n[user_id],  # General Stuff
@@ -37,8 +39,7 @@ for user_id in hate.keys():
                   betweenness[user_id], eigenvector[user_id],  # Network Attributes
                   in_degree[user_id], out_degree[user_id]))
 
-columns = ["user_id", "hate", "hate_neigh", "normal_neigh",
-           "statuses_count", "followers_count", "followees_count",
+columns = ["user_id", "hate", "hate_neigh", "normal_neigh", "statuses_count", "followers_count", "followees_count",
            "favorites_count", "listed_count", "median_int", "average_int",
            "betweenness", "eigenvector", "in_degree", "out_degree"]
 
