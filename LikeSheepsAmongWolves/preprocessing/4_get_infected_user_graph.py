@@ -22,6 +22,8 @@ for line in csv_writer:
     quote = regexp.search(line["qt_text"])
     if text is not None or retweet is not None or quote is not None:
         set_users[line["user_id"]] = True
+f.close()
+
 
 nx_graph = nx.read_graphml("../data/users.graphml")
 nx_graph = nx_graph.reverse(copy=False)
