@@ -1,42 +1,50 @@
-import os
-import json
+from LikeSheepsAmongWolves.crawler.neo4j_schema import *
+from py2neo import Graph, Relationship, NodeSelector
+from urllib.parse import urlparse
+from datetime import datetime
 import random
 import tweepy
-from datetime import datetime
-from urllib.parse import urlparse
-from py2neo import Graph, Relationship, NodeSelector
-from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_tweet, tweepy2string_tweet
-from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_materialize_user
-from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_user, tweepy2neo4j_virtual_user
-from LikeSheepsAmongWolves.twitter_crawler.twitter_neo4j_ogm_schema import tweepy2neo4j_media
+import json
+import os
 
 
 class MHCrawler:
+
     def __init__(self, auth_tweepy, auth_neo4j, n, seed, next_node, w=50):
+        # sets current account on Twitter, as specified in the secrets file. Only uses one.
         self.curr_acc = 0
         self.accounts = list(auth_tweepy.items())
         self.api = MHCrawler.auth_tweepy(self.accounts[self.curr_acc][1])
+
+        # authenticates neo4j
         self.graph = MHCrawler.auth_neo4j(auth_neo4j)
+
+        # starts node selector from py2neo
         self.node_selector = NodeSelector(self.graph)
+
+        # starts random walk parameters
         self.seed, self.n, self.w = seed, n, w
         self.next_node = list(self.node_selector.select("User", id=next_node["id"]))[0] \
             if next_node is not None else next_node
         self.previous_node = None
 
+        # checks for uniqueness constraints/index keys in the database and creates them if they don't exist
         if self.graph.schema.get_uniqueness_constraints("User") != ["id"]:
             self.graph.schema.create_uniqueness_constraint("User", "id")
-
         if self.graph.schema.get_uniqueness_constraints("Tweet") != ["id"]:
             self.graph.schema.create_uniqueness_constraint("Tweet", "id")
-
         if self.graph.schema.get_uniqueness_constraints("Media") != ["url"]:
             self.graph.schema.create_uniqueness_constraint("Media", "url")
-
         if "number" not in self.graph.schema.get_indexes("User"):
             self.graph.schema.create_index("User", "number")
 
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # static methods to handle twitter_rwwj_control.json
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     @staticmethod
     def control_break():
+        """Basically the way to stop the crawler, just go into the control file and change the continue value to 0"""
         g = open("../secrets/twitter_rwwj_control.json", 'r')
         control_var = json.load(g)
         g.close()
@@ -53,6 +61,10 @@ class MHCrawler:
         json.dump(tmp, g)
         g.close()
 
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # static methods authenticate twitter and neo4j
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     @staticmethod
     def auth_tweepy(auth):
         oauth = tweepy.OAuthHandler(auth["consumer_key"], auth["consumer_secret"])
@@ -62,6 +74,10 @@ class MHCrawler:
     @staticmethod
     def auth_neo4j(auth):
         return Graph(auth["host"], password=auth["password"])
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # methods get info from twitter's payload
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     @staticmethod
     def get_quoted_users(status):
@@ -128,6 +144,10 @@ class MHCrawler:
                 rel = Relationship(user_p, "quoted", virtual_user)
                 self.graph.merge(rel)
 
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # pushes node into the graph
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     def push_node(self, node):
         user = self.api.get_user(node["id"])
 
@@ -139,6 +159,10 @@ class MHCrawler:
         self.graph.push(user_p)
         self.get_tweets(user_p)
         return user_p
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # random walk
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def init_run(self):
         user = self.api.get_user(self.seed)
@@ -171,6 +195,7 @@ class MHCrawler:
         while True:
 
             # try:
+
             ts = datetime.now()
 
             if MHCrawler.control_break():
@@ -207,24 +232,25 @@ class MHCrawler:
 
 
 if __name__ == "__main__":
+
+    # Opens the twitter secrets as shown in the example _twitter_secrets.json;
     f = open("../secrets/twitter_secrets.json", 'r')
     config_tweepy = json.load(f)
     f.close()
 
+    # Opens the neo4j secrets as shown in the example _twitter_secrets.json;
     f = open("../secrets/twitter_neo4jsecret.json", 'r')
     config_neo4j = json.load(f)
     f.close()
 
+    # Opens a control json or sets custom seeds and starts control;
     if os.path.exists("twitter_rwwj_control.json"):
         f = open("../secrets/twitter_rwwj_control.json", 'r')
         control = json.load(f)
         f.close()
     else:
         control = dict()
-        control["seed"] = 850859913244852224
-        control["continue"] = True
-        control["next"] = None
-        control["n"] = 1
+        control["seed"], control["continue"], control["next"], control["n"] = 850859913244852224, True, None, 1
 
     crawl = MHCrawler(config_tweepy, config_neo4j, control["n"], control["seed"], control["next"])
     crawl.run()

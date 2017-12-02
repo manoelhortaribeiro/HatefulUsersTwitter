@@ -1,21 +1,12 @@
+from sklearn.metrics import recall_score, precision_score, accuracy_score, roc_curve, auc
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import StratifiedKFold
-from sklearn.neural_network import MLPClassifier
-from sklearn.decomposition import PCA
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.svm import SVC, LinearSVC
-from sklearn.linear_model import SGDRegressor
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier
-from sklearn.neural_network import MLPClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import classification_report, recall_score, precision_score, accuracy_score, roc_curve, auc
-from sklearn.preprocessing import Normalizer, MinMaxScaler, StandardScaler
-import pandas as pd
-import itertools
-import numpy as np
-from scipy import interp
-import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+from scipy import interp
+import pandas as pd
+import numpy as np
 
 
 def scale_vals(x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c):
@@ -28,21 +19,6 @@ def scale_vals(x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c):
     x_empath_c = scaling.fit_transform(x_empath_c)
     return x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c
 
-
-def pca_vals(x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c, dim):
-    pca = PCA(n_components=dim[0])
-    x_attr = pca.fit_transform(x_attr) if dim[0] is not 0 else x_attr
-    pca = PCA(n_components=dim[1])
-    x_attr_c = pca.fit_transform(x_attr_c) if dim[1] is not 0 else x_attr_c
-    pca = PCA(n_components=dim[2])
-    x_glove = pca.fit_transform(x_glove) if dim[2] is not 0 else x_glove
-    pca = PCA(n_components=dim[3])
-    x_glove_c = pca.fit_transform(x_glove_c) if dim[3] is not 0 else x_glove_c
-    pca = PCA(n_components=dim[4])
-    x_empath = pca.fit_transform(x_empath) if dim[4] is not 0 else x_empath
-    pca = PCA(n_components=dim[5])
-    x_empath_c = pca.fit_transform(x_empath_c) if dim[5] is not 0 else x_empath_c
-    return x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c
 
 
 df = pd.read_csv("../data/users_all_neigh.csv")
