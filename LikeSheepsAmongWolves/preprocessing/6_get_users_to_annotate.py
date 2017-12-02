@@ -8,7 +8,7 @@ random.seed(1234)
 
 N = 6000
 
-nx_graph = nx.read_graphml("../data/users_infected_diffusion1.graphml")
+nx_graph = nx.read_graphml("../data/users_infected_diffusion.graphml")
 diffusion_slur = nx.get_node_attributes(nx_graph, name="diffusion_slur")
 screen_names = nx.get_node_attributes(nx_graph, name="screen_name")
 in_degree = nx_graph.in_degree()

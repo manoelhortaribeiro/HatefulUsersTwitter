@@ -30,7 +30,7 @@ for line in csv_writer:
 
 # Set hate attributes
 
-nx_graph = nx.read_graphml("../data/users_infected_diffusion1.graphml")
+nx_graph = nx.read_graphml("../data/users_infected_diffusion.graphml")
 nx.set_node_attributes(nx_graph, name="hate", values=-1)
 nx.set_node_attributes(nx_graph, name="hate", values=set_users)
 
