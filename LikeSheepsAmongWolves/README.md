@@ -8,7 +8,7 @@ There is a loose sense of "order" in the folders, although some are only auxilia
 
 - `./prepreprocessing/` contains scripts to select the users to be annotated, and extract their tweets.
 
-- `./formatting/` contains scripts to get the features to be analyzed and that will be fed into the classifier.
+- `./features/` contains scripts to get the features to be analyzed and that will be fed into the classifier.
 
 - `./analysis/`
 

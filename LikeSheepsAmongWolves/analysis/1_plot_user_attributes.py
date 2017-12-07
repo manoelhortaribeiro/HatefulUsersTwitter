@@ -1,11 +1,11 @@
-import math
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from seaborn.algorithms import bootstrap
 from matplotlib.ticker import FuncFormatter
+from seaborn.algorithms import bootstrap
+import matplotlib.pyplot as plt
 from seaborn.utils import ci
+import seaborn as sns
+import pandas as pd
+import numpy as np
+import math
 
 
 def formatter(x, pos):
@@ -26,15 +26,14 @@ form = FuncFormatter(formatter)
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#FD878D", "#385A89", "#5676A1", ]
+color_mine = ["#F8414A", "#FD878D", "#385A89", "#5676A1"]
 
 df = pd.read_csv("../data/users_attributes.csv")
 df = df[df.hate != "other"]
 
 f, axzs = plt.subplots(2, 5, figsize=(10.8, 4))
 
-attributes_all = [["statuses_count", "followers_count", "followees_count",
-                   "favorites_count", "betweenness"],
+attributes_all = [["statuses_count", "followers_count", "followees_count", "favorites_count", "betweenness"],
                   ["median_int", "average_int", "eigenvector", "in_degree", "out_degree"]]
 
 titles_all = [["\#statuses", "\#followers", "\#followees", "\#favorites", "betweenness"],

@@ -60,6 +60,7 @@ nx.set_node_attributes(nx_graph, name="median_interval", values=users_interval_m
 nx.set_node_attributes(nx_graph, name="average_interval", values=users_interval_average)
 
 # Set node network-based attributes, such as betweenness and eigenvector
+
 vt = time.time()
 betweenness = nx.betweenness_centrality(nx_graph, k=16258, normalized=False)
 eigenvector = nx.eigenvector_centrality(nx_graph)

@@ -44,4 +44,5 @@ columns = ["user_id", "hate", "hate_neigh", "normal_neigh", "statuses_count", "f
            "betweenness", "eigenvector", "in_degree", "out_degree"]
 
 df = pd.DataFrame.from_records(users, columns=columns)
+
 df.to_csv("../data/users_attributes.csv", index=False)
