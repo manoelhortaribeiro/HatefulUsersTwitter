@@ -16,18 +16,6 @@ for line in csv_writer:
         set_users[line["user_id"]] = 0
 f.close()
 
-# Read intervals between tweets
-
-f = open("../data/time_diff.csv", "r")
-csv_writer = csv.DictReader(f)
-
-users_interval_median = dict()
-users_interval_average = dict()
-
-for line in csv_writer:
-    users_interval_median[line["user_id"]] = line["time_diff_median"]
-    users_interval_average[line["user_id"]] = line["time_diff"]
-
 # Set hate attributes
 
 nx_graph = nx.read_graphml("../data/users_infected_diffusion.graphml")
@@ -54,10 +42,6 @@ nx.set_node_attributes(nx_graph, name="hateful_neighbors", values=hateful_neighb
 nx.set_node_attributes(nx_graph, name="normal_neighbors", values=False)
 nx.set_node_attributes(nx_graph, name="normal_neighbors", values=normal_neighbors)
 
-# Set median and average interval attributes
-
-nx.set_node_attributes(nx_graph, name="median_interval", values=users_interval_median)
-nx.set_node_attributes(nx_graph, name="average_interval", values=users_interval_average)
 
 # Set node network-based attributes, such as betweenness and eigenvector
 

@@ -73,8 +73,6 @@ def processing(vals, columns, iterv):
     df_hashtags = pd.DataFrame(hashtags_cols, columns=["number hashtags", "hashtags"], index=users_hashtags.index)
     df_hashtags.index.names = ['user_id']
 
-    # TWEETS NUMBER
-
     df_tweet_number = users.groupby(["user_id"])["tweet_text"].apply(lambda x: get_values(x)).reset_index()
     df_tweet_number.set_index("user_id", inplace=True)
     df_tweet_number.columns = ["tweet number"]

@@ -1,5 +1,8 @@
 # From Database to Annotation Ready
 
+![](../imgs/preprocessing.png)
+
+
 - This folder contains the scripts (and a python notebook with the commented scripts) 
 that can be used to transform the data from the neo4j graph to easier to use files.
 
@@ -21,3 +24,4 @@ that can be used to transform the data from the neo4j graph to easier to use fil
      DeGroot's model proposed by Golub & Jackson (2010).
     
     - `6_get_users_to_annotate.py` gets users to annotate from all strata.
+    

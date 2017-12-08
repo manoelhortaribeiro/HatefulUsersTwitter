@@ -1,7 +1,7 @@
-import csv
-import json
-import tweepy
 import pandas as pd
+import tweepy
+import json
+import csv
 
 
 def get_tweepy(accs, val):
@@ -17,12 +17,13 @@ f.close()
 
 curr_account = 0
 all_accs = 5
-df = pd.read_csv("../data/annotated.csv")
+df = pd.read_csv("../data/users_attributes.csv")
 ids = df.user_id.values
 crawl = get_tweepy(accounts, curr_account)
 
 
 creation_time = dict()
+
 
 count = 0
 for user_id in ids:
