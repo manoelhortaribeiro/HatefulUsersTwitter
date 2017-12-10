@@ -4,24 +4,29 @@ import csv
 
 # Read annotated users
 
-f = open("../data/annotated.csv", "r")
+f = open("../data/annotated_full.csv", "r")
 csv_writer = csv.DictReader(f)
 
 set_users = dict()
-
+c = 0
+tmp = set()
 for line in csv_writer:
     if line["hate"] == '1':
+        tmp.add(line["user_id"])
         set_users[line["user_id"]] = 1
     elif line["hate"] == "0":
         set_users[line["user_id"]] = 0
 f.close()
 
+
+
 # Set hate attributes
 
 nx_graph = nx.read_graphml("../data/users_infected_diffusion.graphml")
+
+
 nx.set_node_attributes(nx_graph, name="hate", values=-1)
 nx.set_node_attributes(nx_graph, name="hate", values=set_users)
-
 # Set hateful and normal neighbors attribute
 
 nodes = nx_graph.nodes(data='hate')
@@ -46,7 +51,7 @@ nx.set_node_attributes(nx_graph, name="normal_neighbors", values=normal_neighbor
 # Set node network-based attributes, such as betweenness and eigenvector
 
 vt = time.time()
-betweenness = nx.betweenness_centrality(nx_graph, k=16258, normalized=False)
+betweenness = nx.betweenness_centrality(nx_graph, k=1, normalized=False)  # 16258
 eigenvector = nx.eigenvector_centrality(nx_graph)
 in_degree = nx.in_degree_centrality(nx_graph)
 out_degree = nx.out_degree_centrality(nx_graph)

@@ -39,10 +39,8 @@ df["number hashtags"] = df["number hashtags"] / (df["tweet number"] + df["retwee
 df["baddies"] = df["baddies"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 
 f, axzs = plt.subplots(3, 8, figsize=(10.8, 6))
-boxprops = dict(linewidth=0.3)
-whiskerprops = dict(linewidth=0.3)
-capprops = dict(linewidth=0.3)
-medianprops = dict(linewidth=1)
+
+
 attributes_all = [["sadness_empath", "fear_empath", "swearing_terms_empath", "independence_empath",
                    "positive_emotion_empath", "negative_emotion_empath", "government_empath", "love_empath"],
                   ["warmth_empath", "ridicule_empath", "masculine_empath", "feminine_empath",
@@ -66,23 +64,31 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
                df[df.is_63],
                df]
         tmp = []
-        medians = []
-        averages = []
+        medians, medians_ci = [], []
+        averages, averages_ci = [], []
 
         for category in men:
+            boots = bootstrap(category[attribute], func=np.nanmean, n_boot=10000)
+            ci_tmp = ci(boots)
+            average = (ci_tmp[0] + ci_tmp[1]) / 2
+            ci_average = (ci_tmp[1] - ci_tmp[0]) / 2
+            averages.append(average)
+            averages_ci.append(ci_average)
+            boots = bootstrap(category[attribute], func=np.nanmedian, n_boot=10000)
+            ci_tmp = ci(boots)
+            median = (ci_tmp[0] + ci_tmp[1]) / 2
+            ci_median = (ci_tmp[1] - ci_tmp[0]) / 2
+            medians.append(median)
+            medians_ci.append(ci_median)
+
             tmp.append(category[attribute].values)
-            medians.append(np.nanmedian(category[attribute].values))
-            averages.append(np.nanmean(category[attribute].values))
 
-        rects = sns.violinplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
-                            boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops,
-                            medianprops=medianprops, showmeans=True)#, bootstrap=10000)
+        ind = np.array([0, 1, 2, 3, 4, 5])
+        width = .6
 
-        # xmin, xmax = axis.get_ylim()
-        #
-        # for i in range(len(men)):
-        #     axis.text(i, xmax, formatter(averages[i], None), verticalalignment='top',  rotation=30,
-        #               horizontalalignment='center', size='x-small', color='#000000')
+        rects = axis.bar(ind, medians, width, yerr=medians_ci, color=color_mine,
+                         ecolor="#212823", edgecolor=["#4D1A17"]*6, linewidth=.3)
+
         axis.yaxis.set_major_formatter(form)
 
         axis.set_xticks([])
@@ -93,10 +99,10 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
 
-# f.legend((rects[0], rects[1], rects[2], rects[3]),
-#          ("Hateful Acc.", "Hateful Neigh.", "Normal Acc.", "Normal Neigh"),
-#          loc='upper center',
-#          fancybox=True, shadow=True, ncol=4)
+f.legend((rects[0], rects[1], rects[2], rects[3], rects[4], rects[5]),
+         ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'All'),
+         loc='upper center',
+         fancybox=True, shadow=True, ncol=6)
 f.tight_layout(rect=[0, 0, 1, .95])
 f.savefig("../imgs/lexical.pdf")
 

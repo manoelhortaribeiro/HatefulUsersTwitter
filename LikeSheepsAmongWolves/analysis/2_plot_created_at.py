@@ -10,7 +10,6 @@ sns.set(style="whitegrid", font="serif")
 color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
 
 df = pd.read_csv("../data/users_created_at.csv")
-# df1 = df1[df1.hate != "None"]
 
 men = [df[df.hate == "hateful"], df[df.hate == "normal"], df[df.hate_neigh], df[df.normal_neigh]]
 

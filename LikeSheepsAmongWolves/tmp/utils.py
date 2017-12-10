@@ -1,6 +1,6 @@
 # Get column values
-cols_attr = ["statuses_count", "followers_count", "followees_count", "favorites_count", "listed_count", "median_int",
-             "average_int", "betweenness", "eigenvector", "in_degree", "out_degree", "sentiment",
+cols_attr = ["statuses_count", "followers_count", "followees_count", "favorites_count", "listed_count", "time_diff",
+             "time_diff_median", "betweenness", "eigenvector", "in_degree", "out_degree", "sentiment",
              "number hashtags", "tweet number", "retweet number", "quote number", "status length",
              "number urls", "baddies",
              "mentions"]

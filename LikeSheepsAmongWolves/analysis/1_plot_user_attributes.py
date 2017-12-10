@@ -5,14 +5,13 @@ from seaborn.utils import ci
 import seaborn as sns
 import pandas as pd
 import numpy as np
-import math
 
 
 def formatter(x, pos):
     if x == 0:
         return "0"
     if 0.01 < x < 10:
-        return str(round(x,2))
+        return str(round(x, 2))
     if 10 < x < 1000:
         return int(x)
     if x >= 1000:
@@ -31,9 +30,7 @@ color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89", "#74C365", "#4A5D23"]
 df = pd.read_csv("../data/users_all.csv")
 
 df["tweet_number"] = df["tweet number"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
-df["retweet_number"] = df["retweet number"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["number_urls"] = df["number urls"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
-df["mentions"] = df["mentions"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["mentions"] = df["mentions"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["number hashtags"] = df["number hashtags"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["baddies"] = df["baddies"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
@@ -43,16 +40,19 @@ boxprops = dict(linewidth=0.3)
 whiskerprops = dict(linewidth=0.3)
 capprops = dict(linewidth=0.3)
 medianprops = dict(linewidth=1)
+
 attributes_all = [
-    ["tweet_number", "retweet_number", "number_urls", "mentions", "number hashtags", "baddies"],
-    ["statuses_count", "followers_count", "followees_count", "favorites_count", "average_int", "status length"],
+    ["tweet_number", "number_urls", "mentions", "number hashtags", "baddies", "status length"],
+    ["statuses_count", "followers_count", "followees_count", "favorites_count", "time_diff", "time_diff_median"],
     ["betweenness", "eigenvector", "in_degree", "out_degree", "sentiment", "subjectivity"]]
 
 titles_all = [
-    ["\%tweets", "\%retweets", "urls/tweet", "mentions/tweet", "hashtags/tweet", "profanity/tweet"],
-    ["\#statuses", "\#followers", "\#followees", "\#favorites", "avg(interval)", "length"],
+    ["\#tweets/retweets", "urls/tweet", "mentions/tweet", "hashtags/tweet", "profanity/tweet", "length"],
+    ["\#statuses", "\#followers", "\#followees", "\#favorites", "avg(interval)", "median(interval)"],
     ["betweenness", "eigenvector", "in degree", "out degree", "sentiment", "subjectivity"]]
 
+rects = None
+first = True
 for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
     for axis, attribute, title in zip(axs, attributes, titles):
@@ -64,17 +64,35 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
                df[df.is_63],
                df]
         tmp = []
-        medians = []
-        averages = []
+        medians, medians_ci = [], []
+        averages, averages_ci = [], []
 
         for category in men:
-            tmp.append(category[attribute].values)
-            medians.append(np.nanmedian(category[attribute].values))
-            averages.append(np.nanmean(category[attribute].values))
+            boots = bootstrap(category[attribute], func=np.nanmean, n_boot=1000)
+            ci_tmp = ci(boots)
+            average = (ci_tmp[0] + ci_tmp[1]) / 2
+            ci_average = (ci_tmp[1] - ci_tmp[0]) / 2
+            averages.append(average)
+            averages_ci.append(ci_average)
+            boots = bootstrap(category[attribute], func=np.nanmedian, n_boot=1000)
+            ci_tmp = ci(boots)
+            median = (ci_tmp[0] + ci_tmp[1]) / 2
+            ci_median = (ci_tmp[1] - ci_tmp[0]) / 2
+            medians.append(median)
+            medians_ci.append(ci_median)
 
-        rects = sns.boxplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
-                            boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops,
-                            medianprops=medianprops)
+            tmp.append(category[attribute].values)
+
+        ind = np.array([0, 1, 2, 3, 4, 5])
+        width = .6
+
+        if first is False:
+            rects = axis.bar(ind, medians, width, yerr=medians_ci, color=color_mine,
+                             ecolor="#212823", edgecolor=["#4D1A17"]*6, linewidth=.3)
+        else:
+            rects = sns.boxplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
+                                boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops,
+                                medianprops=medianprops)
 
         axis.yaxis.set_major_formatter(form)
 
@@ -85,14 +103,14 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
         axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
-ymin, _ = axzs[1][4].get_ylim()
-axzs[1][4].set_ylim([ymin, 45000])
-ymin, _ = axzs[2][1].get_ylim()
-axzs[2][1].set_ylim([-0.00000001, 0.0000004])
+    first = False
 
-# f.legend((rects[0], rects[1], rects[2], rects[3]),
-#          ("Hateful Acc.", "Hateful Neigh.", "Normal Acc.", "Normal Neigh"),
-#          loc='upper center',
-#          fancybox=True, shadow=True, ncol=4)
+print(rects)
+
+f.legend((rects[0], rects[1], rects[2], rects[3], rects[4], rects[5]),
+         ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'All'),
+         loc='upper center',
+         fancybox=True, shadow=True, ncol=6)
 f.tight_layout(rect=[0, 0, 1, .95])
+
 f.savefig("../imgs/attributes.pdf")

@@ -4,6 +4,7 @@ import pandas as pd
 nx_graph = nx.read_graphml("../data/users_hate.graphml")
 
 hate = nx.get_node_attributes(nx_graph, "hate")
+
 hate_n = nx.get_node_attributes(nx_graph, "hateful_neighbors")
 normal_n = nx.get_node_attributes(nx_graph, "normal_neighbors")
 betweenness = nx.get_node_attributes(nx_graph, "betweenness")
