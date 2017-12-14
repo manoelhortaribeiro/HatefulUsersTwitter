@@ -21,7 +21,6 @@ def scale_vals(x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c):
     return x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c
 
 
-
 df = pd.read_csv("../data/users_all_neigh.csv")
 df.fillna(0, inplace=True)
 
@@ -30,10 +29,8 @@ df = df[df.hate != "other"]
 # Get X values corresponding only to some columns
 X_attr = np.array(df[cols_attr].values).reshape(-1, len(cols_attr))
 X_attr_c = np.array(df[cols_attr_c].values).reshape(-1, len(cols_attr_c))
-
 X_glove = np.array(df[cols_glove].values).reshape(-1, len(cols_glove))
 X_glove_c = np.array(df[cols_glove].values).reshape(-1, len(cols_glove_c))
-
 X_empath = np.array(df[cols_empath].values).reshape(-1, len(cols_empath))
 X_empath_c = np.array(df[cols_empath].values).reshape(-1, len(cols_empath_c))
 
@@ -59,7 +56,6 @@ for train_index, test_index in skf.split(X, y):
     X_attr_train, X_attr_test = X_attr[train_index], X_attr[test_index]
     X_attr_c_train, X_attr_c_test = X_attr_c[train_index], X_attr_c[test_index]
     X_glove_train, X_glove_test = X_glove[train_index], X_glove[test_index]
-
     X_glove_c_train, X_glove_c_test = X_glove_c[train_index], X_glove_c[test_index]
     X_empath_train, X_empath_test = X_empath[train_index], X_empath[test_index]
     X_empath_c_train, X_empath_c_test = X_empath_c[train_index], X_empath_c[test_index]
@@ -71,23 +67,16 @@ for train_index, test_index in skf.split(X, y):
         scale_vals(X_attr_test, X_attr_c_test, X_glove_test, X_glove_c_test, X_empath_test, X_empath_c_test)
 
     print("ALL")
-    X_all_train = np.concatenate((X_attr_train, X_attr_c_train,
-                                  X_glove_train, X_glove_c_train), axis=1)
+    X_all_train = np.concatenate((X_attr_train, X_attr_c_train, X_glove_train, X_glove_c_train), axis=1)
+    X_all_test = np.concatenate((X_attr_test, X_attr_c_test, X_glove_test, X_glove_c_test), axis=1)
 
-    X_all_test = np.concatenate((X_attr_test, X_attr_c_test,
-                                 X_glove_test, X_glove_c_test), axis=1)
-
-    # print("niegh")
+    # print("NEIGH")
     # X_all_train = np.concatenate((X_attr_c_train, X_glove_c_train), axis=1)
     # X_all_test = np.concatenate((X_attr_c_test, X_glove_c_test), axis=1)
 
-    # print("use")
-    #
+    # print("USER")
     # X_all_train = np.concatenate((X_attr_train, X_glove_train), axis=1)
     # X_all_test = np.concatenate((X_attr_test, X_glove_test), axis=1)
-
-    # X_all_train = pca.fit_transform(X_all_train)
-    # X_all_test = pca.fit_transform(X_all_test)
 
     weights = [w_pos if v == 1 else w_neg for v in y_train]
 

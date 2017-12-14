@@ -18,8 +18,8 @@ tmp = []
 for category in men:
     tmp.append(category["created_at"].values)
 
-f, axs = plt.subplots(1, 1, figsize=(4.4, 3.2))
-sns.violinplot(ax=axs, data=tmp, palette=color_mine, orient="h")
+f, axs = plt.subplots(1, 1, figsize=(5.4, 2))
+sns.violinplot(ax=axs, data=tmp, palette=color_mine, orient="h", linewidth=1)
 axs.set_ylabel("")
 axs.set_xlabel("")
 
