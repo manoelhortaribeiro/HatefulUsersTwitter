@@ -1,8 +1,9 @@
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 from datetime import datetime
+import scipy.stats as stats
+import seaborn as sns
+import pandas as pd
+import numpy as np
 
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
@@ -18,11 +19,15 @@ tmp = []
 for category in men:
     tmp.append(category["created_at"].values)
 
-f, axs = plt.subplots(1, 1, figsize=(5.4, 2))
+f, axs = plt.subplots(1, 1, figsize=(5.4, 2.5))
 sns.violinplot(ax=axs, data=tmp, palette=color_mine, orient="h", linewidth=1)
 axs.set_ylabel("")
 axs.set_xlabel("")
 
+_, n_h = stats.ttest_ind(men[0]["created_at"].values, men[1]["created_at"].values, equal_var=False)
+_, nn_nh = stats.ttest_ind(men[1]["created_at"].values, men[2]["created_at"].values, equal_var=False)
+print(n_h)
+print(nn_nh)
 
 x = df.created_at.values
 x_ticks = np.arange(min(x), max(x)+1, 3.154e+7)

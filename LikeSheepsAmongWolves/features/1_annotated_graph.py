@@ -19,7 +19,6 @@ for line in csv_writer:
 f.close()
 
 
-
 # Set hate attributes
 
 nx_graph = nx.read_graphml("../data/users_infected_diffusion.graphml")
@@ -51,7 +50,7 @@ nx.set_node_attributes(nx_graph, name="normal_neighbors", values=normal_neighbor
 # Set node network-based attributes, such as betweenness and eigenvector
 
 vt = time.time()
-betweenness = nx.betweenness_centrality(nx_graph, k=16258, normalized=False)  # 16258
+betweenness = nx.betweenness_centrality(nx_graph, k=16258, normalized=False)
 eigenvector = nx.eigenvector_centrality(nx_graph)
 in_degree = nx.in_degree_centrality(nx_graph)
 out_degree = nx.out_degree_centrality(nx_graph)

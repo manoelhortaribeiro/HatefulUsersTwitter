@@ -46,3 +46,15 @@ cols_glove = ["{0}_glove".format(v) for v in range(300)]
 cols_attr_c = ["c_" + v for v in cols_attr]
 cols_glove_c = ["c_" + v for v in cols_glove]
 cols_empath_c = ["c_" + v for v in cols_empath]
+
+def formatter(x, pos):
+    if x == 0:
+        return "0"
+    if 0.01 < x < 10:
+        return str(round(x, 2))
+    if 10 < x < 1000:
+        return int(x)
+    if x >= 1000:
+        return "{0}K".format(int(x / 1000))
+    else:
+        return x

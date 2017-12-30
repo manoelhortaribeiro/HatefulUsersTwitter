@@ -1,23 +1,12 @@
+from LikeSheepsAmongWolves.tmp.utils import formatter
 from matplotlib.ticker import FuncFormatter
 from seaborn.algorithms import bootstrap
 import matplotlib.pyplot as plt
 from seaborn.utils import ci
+import scipy.stats as stats
 import seaborn as sns
 import pandas as pd
 import numpy as np
-
-
-def formatter(x, pos):
-    if x == 0:
-        return "0"
-    if 0.01 < x < 10:
-        return str(round(x, 2))
-    if 10 < x < 1000:
-        return int(x)
-    if x >= 1000:
-        return "{0}K".format(int(x / 1000))
-    else:
-        return x
 
 
 form = FuncFormatter(formatter)
@@ -25,44 +14,37 @@ form = FuncFormatter(formatter)
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89", "#74C365", "#4A5D23"]
+color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
 
 df = pd.read_csv("../data/users_all.csv")
 
 df["tweet_number"] = df["tweet number"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
+df["retweet_number"] = df["retweet number"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["number_urls"] = df["number urls"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
+df["mentions"] = df["mentions"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["mentions"] = df["mentions"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["number hashtags"] = df["number hashtags"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["baddies"] = df["baddies"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 
-f, axzs = plt.subplots(3, 6, figsize=(10.8, 6))
-boxprops = dict(linewidth=0.3)
-whiskerprops = dict(linewidth=0.3)
-capprops = dict(linewidth=0.3)
-medianprops = dict(linewidth=1)
+f, axzs = plt.subplots(3, 8, figsize=(10.8, 5))
 
-attributes_all = [
-    ["tweet_number", "number_urls", "mentions", "number hashtags", "baddies", "status length"],
-    ["statuses_count", "followers_count", "followees_count", "favorites_count", "time_diff", "time_diff_median"],
-    ["betweenness", "eigenvector", "in_degree", "out_degree", "sentiment", "subjectivity"]]
+attributes_all = [["sadness_empath", "fear_empath", "swearing_terms_empath", "independence_empath",
+                   "positive_emotion_empath", "negative_emotion_empath", "government_empath", "love_empath"],
+                  ["warmth_empath", "ridicule_empath", "masculine_empath", "feminine_empath",
+                   "violence_empath", "suffering_empath", "dispute_empath", "anger_empath"],
+                  ["envy_empath", "work_empath", "leader_empath", "politics_empath",
+                   "terrorism_empath", "shame_empath", "confusion_empath", "hate_empath"]]
 
-titles_all = [
-    ["\#tweets/retweets", "urls/tweet", "mentions/tweet", "hashtags/tweet", "profanity/tweet", "length"],
-    ["\#statuses", "\#followers", "\#followees", "\#favorites", "avg(interval)", "median(interval)"],
-    ["betweenness", "eigenvector", "in degree", "out degree", "sentiment", "subjectivity"]]
+titles_all = [["Sadness", "Fear", "Swearing", "Independence", "Pos. Emotions", "Neg. Emotions", "Government", "Love"],
+              ["Warmth", "Ridicule", "Masculine", "Feminine", "Violence", "Suffering", "Dispute", "Anger"],
+              ["Envy", "Work", "Leader", "Politics", "Terrorism", "Shame", "Confusion", "Hate"]]
 
-rects = None
-first = True
+
 for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
     for axis, attribute, title in zip(axs, attributes, titles):
         N = 4
-        men = [df[df.hate == "hateful"],
-               df[df.hate == "normal"],
-               df[df.hate_neigh],
-               df[df.normal_neigh],
-               df[df.is_63],
-               df]
+        men = [df[df.hate == "hateful"], df[df.hate == "normal"], df[df.hate_neigh], df[df.normal_neigh]]
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []
@@ -83,16 +65,16 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
             tmp.append(category[attribute].values)
 
-        ind = np.array([0, 1, 2, 3, 4, 5])
-        width = .6
+        ind = np.array([0, 1, 2, 3])
+        _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False)
+        _, nn_nh = stats.ttest_ind(tmp[1], tmp[2], equal_var=False)
 
-        if first is False:
-            rects = axis.bar(ind, medians, width, yerr=medians_ci, color=color_mine,
-                             ecolor="#212823", edgecolor=["#4D1A17"]*6, linewidth=.3)
-        else:
-            rects = sns.boxplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
-                                boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops,
-                                medianprops=medianprops)
+        print(title)
+        print(n_h)
+        print(nn_nh)
+
+        rects = axis.bar(ind, averages, 0.6, yerr=averages_ci, color=color_mine,
+                         ecolor="#212823", edgecolor=["#4D1A17"]*6, linewidth=.3)
 
         axis.yaxis.set_major_formatter(form)
 
@@ -101,16 +83,12 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.set_ylabel("")
         axis.set_xlabel("")
         axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
-        axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
-    first = False
 
-print(rects)
-
-f.legend((rects[0], rects[1], rects[2], rects[3], rects[4], rects[5]),
+f.legend((rects[0], rects[1], rects[2], rects[3]),
          ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'All'),
          loc='upper center',
          fancybox=True, shadow=True, ncol=6)
 f.tight_layout(rect=[0, 0, 1, .95])
+f.savefig("../imgs/lexical.pdf")
 
-f.savefig("../imgs/attributes.pdf")

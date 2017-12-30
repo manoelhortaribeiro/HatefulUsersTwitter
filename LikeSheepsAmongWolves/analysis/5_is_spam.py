@@ -1,8 +1,6 @@
 from matplotlib.ticker import FuncFormatter
 import scipy.stats as stats
-from seaborn.algorithms import bootstrap
 import matplotlib.pyplot as plt
-from seaborn.utils import ci
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -56,26 +54,13 @@ for axs, attributes, titles, x_labels in zip([axzs], attributes_all, titles_all,
         men = [df[df.hate == "hateful"],
                df[df.hate == "normal"],
                df[df.hate_neigh],
-               df[df.normal_neigh],
-               df[df.is_63],
-               df[df.is_63 == False]]
+               df[df.normal_neigh]]
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []
 
         for category in men:
-            # boots = bootstrap(category[attribute], func=np.nanmean, n_boot=1000)
-            # ci_tmp = ci(boots)
-            # average = (ci_tmp[0] + ci_tmp[1]) / 2
-            # ci_average = (ci_tmp[1] - ci_tmp[0]) / 2
-            # averages.append(average)
-            # averages_ci.append(ci_average)
-            # boots = bootstrap(category[attribute], func=np.nanmedian, n_boot=1000)
-            # ci_tmp = ci(boots)
-            # median = (ci_tmp[0] + ci_tmp[1]) / 2
-            # ci_median = (ci_tmp[1] - ci_tmp[0]) / 2
-            # medians.append(median)
-            # medians_ci.append(ci_median)
+
             w_inf = category[attribute].values
             non_inf = w_inf[w_inf < 1E308]
             tmp.append(non_inf)
@@ -83,18 +68,12 @@ for axs, attributes, titles, x_labels in zip([axzs], attributes_all, titles_all,
         ind = np.array([0, 1, 2, 3, 4, 5])
         width = .6
 
-
-
-
         _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False)
         _, nn_nh = stats.ttest_ind(tmp[1], tmp[2], equal_var=False)
-        _, s_ns = stats.ttest_ind(tmp[3], tmp[4], equal_var=False)
 
         print(title)
         print(n_h)
         print(nn_nh)
-        print(s_ns)
-
 
         rects = sns.boxplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
                             boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)
@@ -104,16 +83,11 @@ for axs, attributes, titles, x_labels in zip([axzs], attributes_all, titles_all,
         axis.set_xticks([])
         axis.set_title(title)
         axis.set_ylabel("")
-        axis.set_xlabel(x_label)
+        axis.set_xlabel("")
         axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
         axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
 
-
-# f.legend((rects[0], rects[1], rects[2], rects[3], rects[4], rects[5]),
-#          ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'All'),
-#          loc='upper center',
-#          fancybox=True, shadow=True, ncol=6)
-f.tight_layout(rect=[0, 0, 1, .95])
+f.tight_layout(rect=[0, 0, 1, 1])
 
 f.savefig("../imgs/spam.pdf")
