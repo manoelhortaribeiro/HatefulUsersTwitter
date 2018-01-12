@@ -1,5 +1,13 @@
 # Like Sheep Among Wolves
 
+This folder contains the data and the analysis done in the paper:
+
+    "Like Sheep Among Wolves": 
+    Characterizing Hateful Users on Twitter
+        Manoel Horta Ribeiro, Pedro H Calais, Yuri A Santos, 
+        Virgílio AF Almeida, Wagner Meira Jr
+    to be presented @ MIS2 workshop at WSDM'18
+
 ## Folder Structure
 
 There is a loose sense of "order" in the folders, although some are only auxiliary:
@@ -29,5 +37,9 @@ There is a loose sense of "order" in the folders, although some are only auxilia
 Some of the files used are not shared because sharing them violates Twitter's guidelines. 
 However, we do our best to ensure reproducibility:
 
--   `bad_words.txt`
--   `lexicon.txt`
+- all the data analysis process is throughoutly explained with jupyter notebooks :)
+
+- you can download the following files here (to be added):
+
+    -   `bad_words.txt`
+    -   `lexicon.txt`

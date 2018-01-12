@@ -46,7 +46,7 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
             tmp.append(category[attribute].values)
 
         sns.boxplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
-        boxprops = boxprops, whiskerprops = whiskerprops, capprops = capprops, medianprops = medianprops)
+                    boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)
 
         _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False)
         _, nn_nh = stats.ttest_ind(tmp[2], tmp[3], equal_var=False)
