@@ -1,9 +1,15 @@
-# Get column values
+graph_attributes = ["created_at", "followees_count", "listed_count", "screen_name", "profile_image_url",
+                    "default_profile_image", "diffusion_slur", "hate", "time_zone", "eigenvector", "uname",
+                    "hateful_neighbors", "out_degree", "default_profile", "lang", "statuses_count", "location",
+                    "betweenness", "in_degree", "id", "slur", "description", "favorites_count", "virtual",
+                    "normal_neighbors", "number", "followers_count", "verified", "geo_enabled"]
+
 cols_attr = ["statuses_count", "followers_count", "followees_count", "favorites_count", "listed_count", "time_diff",
              "time_diff_median", "betweenness", "eigenvector", "in_degree", "out_degree", "sentiment",
              "number hashtags", "tweet number", "retweet number", "quote number", "status length",
              "number urls", "baddies",
              "mentions"]
+
 cols_empath = [
     "traveling_empath", "fashion_empath", "sadness_empath", "fun_empath",
     "noise_empath", "phone_empath", "cold_empath", "driving_empath", "love_empath", "weather_empath",
@@ -40,12 +46,14 @@ cols_empath = [
     "violence_empath", "trust_empath", "alcohol_empath", "smell_empath", "blue_collar_job_empath", "death_empath",
     "feminine_empath", "medieval_empath", "journalism_empath", "farming_empath", "plant_empath", "shopping_empath",
     "ship_empath", "religion_empath", "tourism_empath", "power_empath"]
+
 cols_glove = ["{0}_glove".format(v) for v in range(300)]
 
 # Get neighborhood column values
 cols_attr_c = ["c_" + v for v in cols_attr]
 cols_glove_c = ["c_" + v for v in cols_glove]
 cols_empath_c = ["c_" + v for v in cols_empath]
+
 
 def formatter(x, pos):
     if x == 0:

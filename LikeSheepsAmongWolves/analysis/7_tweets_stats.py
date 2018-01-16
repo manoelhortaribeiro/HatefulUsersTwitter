@@ -6,7 +6,7 @@ import seaborn as sns
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#FD878D", "#385A89", "#5676A1" ]
+color_mine = ["#F8414A", "#FD878D", "#385A89", "#5676A1"]
 color_mine_rgba = [(248, 65, 74, 1), (253, 135, 141, 1), (56, 90, 137, 1), (86, 118, 161, 1)]
 titles = ["\%tweets", "\%retweets", "\%quotes", "urls/tweet", "mentions/tweet", "hashtags/tweet", "profanity/tweet", "length"]
 values = ["tweet_number", "retweet_number", "quote_number", "number_urls", "mentions", "number hashtags", "baddies", "status length"]

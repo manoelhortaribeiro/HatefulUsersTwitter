@@ -16,42 +16,46 @@ time_diff.to_csv("../data/time_diff.csv")
 users_attributes = pd.read_csv("../data/users_attributes.csv")
 users_content = pd.read_csv("../data/users_content.csv")
 users_content2 = pd.read_csv("../data/users_content2.csv")
-users_deleted = pd.read_csv("../data/deleted_account.csv")
+users_deleted = pd.read_csv("../data/deleted_account_before_guideline.csv")
+users_deleted_after_guideline = pd.read_csv("../data/deleted_account_after_guideline.csv")
 users_time = pd.read_csv("../data/time_diff.csv")
+users_date = pd.read_csv("../data/created_at.csv")
 
-df = pd.merge(users_attributes, users_content, on="user_id", how="inner")
-df = pd.merge(df, users_content2, on="user_id", how="inner")
-df = pd.merge(df, users_deleted, on="user_id", how="inner")
-df = pd.merge(df, users_time, on="user_id", how="inner")
+df = pd.merge(left=users_attributes, right=users_content, on="user_id", how="left")
+df = pd.merge(left=df, right=users_content2, on="user_id", how="left")
+df = pd.merge(left=df, right=users_deleted, on="user_id", how="left")
+df = pd.merge(left=df, right=users_deleted_after_guideline, on="user_id", how="left")
+df = pd.merge(left=df, right=users_time, on="user_id", how="left")
+df = pd.merge(left=df, right=users_date, on="user_id", how="left")
 
 df.to_csv("../data/users_all.csv", index=False)
 
-users_date = pd.read_csv("../data/created_at.csv")
-created_at = pd.merge(users_attributes, users_date, on="user_id", how="inner")
+# df = pd.read_csv("../data/users_all.csv")
 
-created_at = created_at[["user_id", "created_at", "hate", "hate_neigh", "normal_neigh"]]
-created_at.to_csv("../data/users_created_at.csv", index=False)
-
+df1 = df.set_index("user_id", verify_integrity=True)
 
 cols = cols_attr + cols_glove + cols_empath
 num_cols = len(cols)
-
 graph = nx.read_graphml("../data/users_hate.graphml")
-df = pd.read_csv("../data/users_all.csv", index_col=0)
-
 users = list()
+count = 0
 for user_id in graph.nodes():
-    if int(user_id) in df.index.values:
+    count += 1
+    if int(user_id) in df1.index.values:
         tmp = []
         for neighbor in graph.neighbors(user_id):
-            if int(neighbor) in df.index.values:
-                tmp.append(list(df.loc[int(neighbor)][cols].values))
+            if int(neighbor) in df1.index.values:
+                tmp.append(list(df1.loc[int(neighbor)][cols].values))
         users.append([user_id] + list(np.average(np.array(tmp), axis=0)))
 
-df = pd.DataFrame.from_records(users, columns=["user_id"] + ["c_"+v for v in cols])
-df.to_csv("../data/users_neighborhood.csv", index=False)
 
-users_all = pd.read_csv("../data/users_all.csv")
-users_neighbor = pd.read_csv("../data/users_neighborhood.csv")
-df = pd.merge(users_all, users_neighbor, on="user_id", how="inner")
-df.to_csv("../data/users_all_neigh.csv", index=False)
+df2 = pd.DataFrame.from_records(users, columns=["user_id"] + ["c_" + v for v in cols])
+df2.to_csv("../data/users_neighborhood.csv", index=False)
+
+# df = pd.read_csv("../data/users_all.csv")
+# df2 = pd.read_csv("../data/users_neighborhood.csv")
+
+df3 = pd.merge(left=df, right=df2, on="user_id", how="left")
+df3.to_csv("../data/users_all_neighborhood.csv", index=False)
+
+

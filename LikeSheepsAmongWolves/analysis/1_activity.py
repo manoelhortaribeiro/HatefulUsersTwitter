@@ -18,8 +18,7 @@ sns.set(style="whitegrid", font="serif")
 color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
 
 df = pd.read_csv("../data/users_all.csv")
-df2 = pd.read_csv("../data/users_created_at.csv")
-
+df = df[df["created_at"].notnull()]
 
 f, axzs = plt.subplots(1, 5, figsize=(10.8, 2))
 axzs = [axzs]
@@ -29,9 +28,8 @@ capprops = dict(linewidth=0.3)
 medianprops = dict(linewidth=1)
 
 df["tweet_number"] = df["tweet number"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
-df2["created_at"] = -(df2["created_at"] - datetime.datetime(2017, 12, 29).timestamp())/86400
+df["created_at"] = -(df["created_at"] - datetime.datetime(2017, 12, 29).timestamp())/86400
 
-df = pd.merge(df, df2, on="user_id", how="inner")
 
 df["statuses_count"] = df["statuses_count"] / df["created_at"]
 df["followers_count"] = df["followers_count"] / df["created_at"]
@@ -46,10 +44,10 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
     for axis, attribute, title in zip(axs, attributes, titles):
         N = 4
-        men = [df[df.hate_x == "hateful"],
-               df[df.hate_x == "normal"],
-               df[df.hate_neigh_x],
-               df[df.normal_neigh_x]]
+        men = [df[df.hate == "hateful"],
+               df[df.hate == "normal"],
+               df[df.hate_neigh],
+               df[df.normal_neigh]]
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []

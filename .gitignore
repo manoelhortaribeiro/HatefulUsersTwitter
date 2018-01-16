@@ -2,6 +2,8 @@ LikeSheepsAmongWolves/secrets/twitter_neo4jsecret.json
 LikeSheepsAmongWolves/secrets/twitter_secrets.json
 LikeSheepsAmongWolves/data/*
 LikeSheepsAmongWolves/imgs/*
+YouAreFakeNews/secrets/twitter_neo4jsecret.json
+YouAreFakeNews/secrets/twitter_secrets.json
 .ipynb_checkpoints
 __pycache__/
 .idea/

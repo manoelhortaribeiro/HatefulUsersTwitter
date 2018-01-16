@@ -53,7 +53,9 @@ for user_id in ids:
                 break
 
 
-f = open("../data/deleted_account.csv", "w")
+# f = open("../data/deleted_account_before_guideline.csv", "w")
+f = open("../data/deleted_account_after_guideline.csv", "w")
+
 csv_writer = csv.writer(f)
 
 csv_writer.writerow(["user_id", "is_50", "is_63"])
