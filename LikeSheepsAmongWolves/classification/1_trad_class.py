@@ -21,7 +21,7 @@ def scale_vals(x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c):
     return x_attr, x_attr_c, x_glove, x_glove_c, x_empath, x_empath_c
 
 
-df = pd.read_csv("../data/users_all_neigh.csv")
+df = pd.read_csv("../data/features/users_all_neighborhood.csv")
 df.fillna(0, inplace=True)
 
 df = df[df.hate != "other"]

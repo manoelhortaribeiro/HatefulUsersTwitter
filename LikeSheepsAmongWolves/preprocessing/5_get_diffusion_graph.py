@@ -5,7 +5,7 @@ initial_belief = 1
 k = 2
 
 np.random.seed(1)
-graph = nx.read_graphml("../data/users_infected.graphml")
+graph = nx.read_graphml("../data/preprocessing/users_infected.graphml")
 
 slur_nodes = list(nx.get_node_attributes(graph, "slur"))
 other_nodes = list(set(graph.nodes()).difference(set(slur_nodes)))
@@ -33,4 +33,4 @@ for node, belief in zip(node_list, beliefs):
     final_beliefs_dict[node] = float(belief)
 
 nx.set_node_attributes(graph, name="diffusion_slur", values=final_beliefs_dict)
-nx.write_graphml(graph, "../data/users_infected_diffusion.graphml".format(k))
+nx.write_graphml(graph, "../data/preprocessing/users_infected_diffusion.graphml".format(k))

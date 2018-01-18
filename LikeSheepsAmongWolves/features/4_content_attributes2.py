@@ -78,11 +78,11 @@ def processing(vals, columns, iterv):
 
     df = pd.DataFrame(pd.concat([df_empath, df_sentiment, df_glove], axis=1))
     df.set_index("user_id", inplace=True)
-    df.to_csv("../data/tmp/users_content_{0}.csv".format(iterv))
+    df.to_csv("../data/features/tmp/users_content_{0}.csv".format(iterv))
     print("-------------{0}".format(iterv))
 
 
-f = open("../data/tweets.csv", "r")
+f = open("../data/preprocessing/tweets.csv", "r")
 
 cols = ["user_id", "screen_name", "tweet_id", "tweet_text", "tweet_creation", "tweet_fav", "tweet_rt", "rp_flag",
         "rp_status", "rp_user", "qt_flag", "qt_user_id", "qt_status_id", "qt_text", "qt_creation", "qt_fav",

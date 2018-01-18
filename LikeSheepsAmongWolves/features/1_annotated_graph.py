@@ -4,7 +4,7 @@ import csv
 
 # Read annotated users
 
-f = open("../data/annotated_full.csv", "r")
+f = open("../data/extra/annotated_full.csv", "r")
 csv_writer = csv.DictReader(f)
 
 set_users = dict()
@@ -21,7 +21,7 @@ f.close()
 
 # Set hate attributes
 
-nx_graph = nx.read_graphml("../data/users_infected_diffusion.graphml")
+nx_graph = nx.read_graphml("../data/preprocessing/users_infected_diffusion.graphml")
 
 
 nx.set_node_attributes(nx_graph, name="hate", values=-1)
@@ -60,4 +60,4 @@ nx.set_node_attributes(nx_graph, name="eigenvector", values=eigenvector)
 nx.set_node_attributes(nx_graph, name="in_degree", values=in_degree)
 nx.set_node_attributes(nx_graph, name="out_degree", values=out_degree)
 
-nx.write_graphml(nx_graph, "../data/users_hate.graphml")
+nx.write_graphml(nx_graph, "../data/features/users_hate.graphml")

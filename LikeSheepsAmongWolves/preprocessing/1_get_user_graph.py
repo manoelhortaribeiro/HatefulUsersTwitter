@@ -19,4 +19,4 @@ for node in graph.data(
         """MATCH (a:User)-[:retweeted]->(b:User) WHERE a.virtual="F" AND b.virtual="F" RETURN a.id as a, b.id as b"""):
     nx_graph.add_edge(node['a'], node['b'])
 
-nx.write_graphml(nx_graph, "../data/users.graphml")
+nx.write_graphml(nx_graph, "../data/preprocessing/users.graphml")

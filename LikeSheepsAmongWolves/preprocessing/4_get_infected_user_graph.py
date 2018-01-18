@@ -2,7 +2,7 @@ import networkx as nx
 import csv
 import re
 
-l = open("../data/lexicon.txt", "r")
+l = open("../data/extra/lexicon.txt", "r")
 regexp = ""
 for line in l.readlines():
     regexp += "({0})|".format(line.rstrip())
@@ -10,7 +10,7 @@ l.close()
 regexp = regexp[:-1]
 regexp = re.compile(regexp)
 
-f = open("../data/tweets.csv", "r")
+f = open("../data/preprocessing/tweets.csv", "r")
 re.match(regexp, "")
 csv_writer = csv.DictReader(f)
 
@@ -25,7 +25,7 @@ for line in csv_writer:
 f.close()
 
 
-nx_graph = nx.read_graphml("../data/users.graphml")
+nx_graph = nx.read_graphml("../data/preprocessing/users.graphml")
 nx_graph = nx_graph.reverse(copy=False)
 nx.set_node_attributes(nx_graph, name="slur", values=set_users)
-nx.write_graphml(nx_graph, "../data/users_infected.graphml")
+nx.write_graphml(nx_graph, "../data/preprocessing/users_infected.graphml")

@@ -17,7 +17,7 @@ plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
 color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
 
-df = pd.read_csv("../data/users_all.csv")
+df = pd.read_csv("../data/users_anon.csv")
 df = df[df["created_at"].notnull()]
 
 f, axzs = plt.subplots(1, 5, figsize=(10.8, 2))
@@ -95,4 +95,4 @@ f.legend((rects[0], rects[1], rects[2], rects[3]),
          fancybox=True, shadow=True, ncol=6)
 f.tight_layout(rect=[0, 0, 1, .95])
 
-f.savefig("../imgs/attributes.pdf")
+f.savefig("../imgs/activity.pdf")

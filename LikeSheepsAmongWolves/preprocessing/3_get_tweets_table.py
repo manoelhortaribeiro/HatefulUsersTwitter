@@ -8,7 +8,7 @@ config_neo4j = json.load(f)
 f.close()
 graph = Graph(config_neo4j["host"], password=config_neo4j["password"])
 
-f = open("../data/tweets.csv", "w")
+f = open("../data/preprocessing/tweets.csv", "w")
 csv_writer = csv.writer(f)
 
 csv_writer.writerow(["user_id", "screen_name",

@@ -36,8 +36,8 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
                df[df.hate == "normal"],
                df[df.hate_neigh],
                df[df.normal_neigh],
-               df[df["is_63"] == False],
-               df[df["is_63"] == True]]
+               df[df["is_63"] == True],
+               df[df["is_63_2"] == True]]
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []

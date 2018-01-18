@@ -44,13 +44,10 @@ attributes_all = [
 titles_all = [
     ["\#followers/followees", "\#URLs/tweet", "hashtags/tweet"]]
 
-x_label_all = [
-    ["(a)", "(b)", "(c)"]]
 
-for axs, attributes, titles, x_labels in zip([axzs], attributes_all, titles_all, x_label_all):
+for axs, attributes, titles in zip([axzs], attributes_all, titles_all):
 
-    for axis, attribute, title, x_label in zip(axs, attributes, titles, x_labels):
-        N = 4
+    for axis, attribute, title in zip(axs, attributes, titles):
         men = [df[df.hate == "hateful"],
                df[df.hate == "normal"],
                df[df.hate_neigh],

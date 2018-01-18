@@ -1,7 +1,7 @@
 #!/bin/bash
 OutFileName="../data/users_content.csv"            # Fix the output name
 i=0                                                # Reset a counter
-for filename in ../data/tmp/*.csv; do
+for filename in ../data/features/tmp/*.csv; do
     if [ "$filename"  != "$OutFileName" ] ;        # Avoid recursion
     then
     if [[ $i -eq 0 ]] ; then
@@ -13,7 +13,7 @@ for filename in ../data/tmp/*.csv; do
 done
 OutFileName="../data/users_content2.csv"           # Fix the output name
 i=0                                                # Reset a counter
-for filename in ../data/tmp2/*.csv; do
+for filename in ../data/features/tmp2/*.csv; do
     if [ "$filename"  != "$OutFileName" ] ;        # Avoid recursion
     then
     if [[ $i -eq 0 ]] ; then

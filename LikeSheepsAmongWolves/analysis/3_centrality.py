@@ -14,8 +14,7 @@ plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
 color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
 
-df = pd.read_csv("../data/users_all.csv")
-df2 = pd.read_csv("../data/users_created_at.csv")
+df = pd.read_csv("../data/users_anon.csv")
 
 f, axzs = plt.subplots(1, 3, figsize=(5.4, 2.5))
 axzs = [axzs]

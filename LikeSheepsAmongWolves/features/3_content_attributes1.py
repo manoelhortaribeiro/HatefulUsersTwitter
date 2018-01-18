@@ -8,7 +8,7 @@ import re
 hashtags = re.compile("#(\w+)")
 regex_mentions = re.compile("@(\w+)")
 urls = re.compile("http(s)?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
-regex_bad_words = re.compile("(" + "|".join(pd.read_csv("../data/bad_words.txt")["words"].values) + ")")
+regex_bad_words = re.compile("(" + "|".join(pd.read_csv("../data/extra/bad_words.txt")["words"].values) + ")")
 
 
 def mentions(tweets):
@@ -103,11 +103,11 @@ def processing(vals, columns, iterv):
 
     df = pd.DataFrame(pd.concat([df_hashtags, df_tweet_number, df_retweet_number, df_quote_number,
                                  df_tweet_length, df_urls, df_baddies, df_mentions], axis=1))
-    df.to_csv("../data/tmp2/users_content_{0}.csv".format(iterv))
+    df.to_csv("../data/features/tmp2/users_content_{0}.csv".format(iterv))
     print("-------------{0}".format(iterv))
 
 
-f = open("../data/tweets.csv", "r")
+f = open("../data/preprocessing/tweets.csv", "r")
 
 cols = ["user_id", "screen_name", "tweet_id", "tweet_text", "tweet_creation", "tweet_fav", "tweet_rt", "rp_flag",
         "rp_status", "rp_user", "qt_flag", "qt_user_id", "qt_status_id", "qt_text", "qt_creation", "qt_fav",

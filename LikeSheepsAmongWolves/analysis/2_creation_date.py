@@ -10,7 +10,8 @@ plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
 color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
 
-df = pd.read_csv("../data/users_created_at.csv")
+df = pd.read_csv("../data/users_anon.csv")
+df = df[df["created_at"].notnull()]
 
 men = [df[df.hate == "hateful"], df[df.hate == "normal"], df[df.hate_neigh], df[df.normal_neigh]]
 

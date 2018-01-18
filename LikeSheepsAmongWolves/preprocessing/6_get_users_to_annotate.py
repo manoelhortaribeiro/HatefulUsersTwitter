@@ -8,7 +8,7 @@ random.seed(1234)
 
 N = 6000
 
-nx_graph = nx.read_graphml("../data/users_infected_diffusion.graphml")
+nx_graph = nx.read_graphml("../data/preprocessing/users_infected_diffusion.graphml")
 diffusion_slur = nx.get_node_attributes(nx_graph, name="diffusion_slur")
 screen_names = nx.get_node_attributes(nx_graph, name="screen_name")
 in_degree = nx_graph.in_degree()
@@ -34,7 +34,7 @@ sample_strata2 = np.random.choice(strata2, size=int(N / 4), replace=False)
 sample_strata3 = np.random.choice(strata3, size=int(N / 4), replace=False)
 sample_strata4 = np.random.choice(strata4, size=min(int(N / 4), len(strata4)), replace=False)
 
-f = open("../data/users_to_annotate.csv", "w")
+f = open("../data/preprocessing/users_to_annotate.csv", "w")
 
 csv_writer = csv.writer(f)
 

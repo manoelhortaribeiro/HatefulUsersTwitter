@@ -1,7 +1,7 @@
 import networkx as nx
 import pandas as pd
 
-nx_graph = nx.read_graphml("../data/users_hate.graphml")
+nx_graph = nx.read_graphml("../data/features/users_hate.graphml")
 
 hate = nx.get_node_attributes(nx_graph, "hate")
 
@@ -39,4 +39,4 @@ columns = ["user_id", "hate", "hate_neigh", "normal_neigh", "statuses_count", "f
 
 df = pd.DataFrame.from_records(users, columns=columns)
 
-df.to_csv("../data/users_attributes.csv", index=False)
+df.to_csv("../data/features/users_attributes.csv", index=False)
