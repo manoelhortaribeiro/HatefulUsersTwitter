@@ -68,14 +68,17 @@ f.close()
 # Makes -G.json
 
 hateful = df[df.hate == "hateful"][["user_id"]]
-train_h = hateful.sample(int(len(hateful)*2/3), axis=0)
+train_h = hateful.sample(int(len(hateful)*4/5), axis=0)
 test_h = hateful[hateful.apply(lambda x: x.values.tolist() not in train_h.values.tolist(), axis=1)]
 normal = df[df.hate == "normal"][["user_id"]]
-train_n = normal.sample(int(len(normal)*2/3), axis=0)
+train_n = normal.sample(int(len(normal)*4/5), axis=0)
 test_n = normal[normal.apply(lambda x: x.values.tolist() not in train_n.values.tolist(), axis=1)]
 
 train = pd.concat([train_h, train_n])
+
+print(len(train.index))
 test = pd.concat([test_h, test_n])
+print(len(test.index))
 
 val_d, test_d = dict(), dict()
 
@@ -126,7 +129,12 @@ f.close()
 
 df = pd.read_csv("../data/users_all.csv")
 
-feats = df[cols_attr + cols_glove + cols_empath].values
+feats = df[cols_glove].values
+
+# # Logistic gets thrown off by big counts, so log transform num comments and score
+# for i in [0, 1, 2, 3, 4, 5]:
+#     feats[:, 0] = np.log(feats[:, 0] + 1.0)
+
 f = open("../data/graph-input/users_anon-feats.npy", "wb")
 np.save(f, np.nan_to_num(feats))
 f.close()

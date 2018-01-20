@@ -12,11 +12,11 @@ form = FuncFormatter(formatter)
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
+color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89",  "#FFFACD", "#EFCC00"]
 
 df = pd.read_csv("../data/users_anon.csv")
 
-f, axzs = plt.subplots(1, 3, figsize=(5.4, 2.5))
+f, axzs = plt.subplots(1, 3, figsize=(5.4, 1.5))
 axzs = [axzs]
 boxprops = dict(linewidth=0.3)
 whiskerprops = dict(linewidth=0.3)
@@ -35,7 +35,9 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         men = [df[df.hate == "hateful"],
                df[df.hate == "normal"],
                df[df.hate_neigh],
-               df[df.normal_neigh]]
+               df[df.normal_neigh],
+               df[df.is_63_2 == True],
+               df[df.is_63_2 == False]]
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []
@@ -56,11 +58,11 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
             tmp.append(category[attribute].values)
 
-        ind = np.array([0, 1, 2, 3])
+        ind = np.array([0, 1, 2, 3, 4, 5])
         width = .6
 
         rects = axis.bar(ind, medians, width, yerr=medians_ci, color=color_mine,
-                         ecolor="#212823", edgecolor=["#4D1A17"]*4, linewidth=.3)
+                         ecolor="#212823", edgecolor=["#4D1A17"]*6, linewidth=.3)
 
         axis.yaxis.set_major_formatter(form)
 
@@ -69,6 +71,7 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.set_ylabel("")
         axis.set_xlabel("")
         axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
+        axis.axvline(4.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
     first = False
 

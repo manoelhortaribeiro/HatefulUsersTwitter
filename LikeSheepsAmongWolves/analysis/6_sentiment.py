@@ -11,12 +11,11 @@ form = FuncFormatter(formatter)
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
+color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89",  "#FFFACD", "#EFCC00"]
 
-df = pd.read_csv("../data/users_all.csv")
-df2 = pd.read_csv("../data/users_created_at.csv")
+df = pd.read_csv("../data/users_anon.csv")
 
-f, axzs = plt.subplots(1, 3, figsize=(5.4, 2))
+f, axzs = plt.subplots(1, 3, figsize=(5.4, 1.5))
 axzs = [axzs]
 boxprops = dict(linewidth=0.3)
 whiskerprops = dict(linewidth=0.3)
@@ -24,7 +23,7 @@ capprops = dict(linewidth=0.3)
 medianprops = dict(linewidth=1)
 
 attributes_all = [["sentiment", "subjectivity", "baddies"]]
-titles_all = [["sentiment", "subjectivity", "baddies"]]
+titles_all = [["sentiment", "subjectivity", "bad words"]]
 
 rects = None
 first = True
@@ -36,8 +35,8 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
                df[df.hate == "normal"],
                df[df.hate_neigh],
                df[df.normal_neigh],
-               df[df["is_63"] == True],
-               df[df["is_63_2"] == True]]
+               df[df["is_63_2"] == True],
+               df[df["is_63_2"] == False]]
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []
@@ -64,6 +63,7 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.set_ylabel("")
         axis.set_xlabel("")
         axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
+        axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
         axzs[0][0].set_ylim(-.15, .4)
         axzs[0][1].set_ylim(.30, .70)

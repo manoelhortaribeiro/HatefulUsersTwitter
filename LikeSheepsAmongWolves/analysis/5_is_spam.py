@@ -1,30 +1,17 @@
 from matplotlib.ticker import FuncFormatter
+from LikeSheepsAmongWolves.tmp.utils import formatter
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
 
-
-def formatter(x, pos):
-    if x == 0:
-        return "0"
-    if 0.01 < x < 10:
-        return str(round(x, 2))
-    if 10 < x < 1000:
-        return int(x)
-    if x >= 1000:
-        return "{0}K".format(int(x / 1000))
-    else:
-        return x
-
-
 form = FuncFormatter(formatter)
 
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89", "#74C365", "#4A5D23"]
+color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89",  "#FFFACD", "#EFCC00"]
 
 df = pd.read_csv("../data/users_all.csv")
 
@@ -51,7 +38,10 @@ for axs, attributes, titles in zip([axzs], attributes_all, titles_all):
         men = [df[df.hate == "hateful"],
                df[df.hate == "normal"],
                df[df.hate_neigh],
-               df[df.normal_neigh]]
+               df[df.normal_neigh],
+               df[df.is_63_2 == True],
+               df[df.is_63_2 == False]]
+
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []
@@ -62,15 +52,15 @@ for axs, attributes, titles in zip([axzs], attributes_all, titles_all):
             non_inf = w_inf[w_inf < 1E308]
             tmp.append(non_inf)
 
-        ind = np.array([0, 1, 2, 3, 4, 5])
-        width = .6
-
-        _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False)
-        _, nn_nh = stats.ttest_ind(tmp[1], tmp[2], equal_var=False)
+        ind = np.array([0, 1, 2, 3])
+        _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False, nan_policy='omit')
+        _, nn_nh = stats.ttest_ind(tmp[2], tmp[3], equal_var=False, nan_policy='omit')
+        _, ns_ns2 = stats.ttest_ind(tmp[4], tmp[5], equal_var=False, nan_policy='omit')
 
         print(title)
         print(n_h)
         print(nn_nh)
+        print(ns_ns2)
 
         rects = sns.boxplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
                             boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)

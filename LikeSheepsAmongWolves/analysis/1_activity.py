@@ -15,7 +15,7 @@ form = FuncFormatter(formatter)
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89"]
+color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89",  "#FFFACD", "#EFCC00"]
 
 df = pd.read_csv("../data/users_anon.csv")
 df = df[df["created_at"].notnull()]
@@ -43,11 +43,13 @@ first = True
 for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
     for axis, attribute, title in zip(axs, attributes, titles):
-        N = 4
+        N = 6
         men = [df[df.hate == "hateful"],
                df[df.hate == "normal"],
                df[df.hate_neigh],
-               df[df.normal_neigh]]
+               df[df.normal_neigh],
+               df[df.is_63_2 == True],
+               df[df.is_63_2 == False]]
         tmp = []
         medians, medians_ci = [], []
         averages, averages_ci = [], []
@@ -68,18 +70,19 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
             tmp.append(category[attribute].values)
 
-        ind = np.array([0, 1, 2, 3])
+        ind = np.array([0, 1, 2, 3, 4, 5])
         width = .6
 
-        _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False)
-        _, nn_nh = stats.ttest_ind(tmp[1], tmp[2], equal_var=False)
+        _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False, nan_policy='omit')
+        _, nn_nh = stats.ttest_ind(tmp[2], tmp[3], equal_var=False, nan_policy='omit')
+        _, s_ns = stats.ttest_ind(tmp[4], tmp[5], equal_var=False, nan_policy='omit')
 
         print(title)
         print(n_h)
         print(nn_nh)
-
+        print(s_ns)
         rects = axis.bar(ind, averages, width, yerr=averages_ci, color=color_mine,
-                         ecolor="#212823", edgecolor=["#4D1A17"]*4, linewidth=.3)
+                         ecolor="#212823", edgecolor=["#4D1A17"]*6, linewidth=.3)
 
         axis.yaxis.set_major_formatter(form)
 
@@ -88,9 +91,10 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.set_ylabel("")
         axis.set_xlabel("")
         axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
+        axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
-f.legend((rects[0], rects[1], rects[2], rects[3]),
-         ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'All'),
+f.legend((rects[0], rects[1], rects[2], rects[3], rects[4], rects[5]),
+         ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'Non-Suspended'),
          loc='upper center',
          fancybox=True, shadow=True, ncol=6)
 f.tight_layout(rect=[0, 0, 1, .95])
