@@ -1,15 +1,11 @@
-from LikeSheepsAmongWolves.tmp.utils import formatter
-from matplotlib.ticker import FuncFormatter
-from seaborn.algorithms import bootstrap
-from scipy.interpolate import interp1d
-import scipy.stats as stats
 import matplotlib.pyplot as plt
-from seaborn.utils import ci
-
-import seaborn as sns
-import pandas as pd
 import numpy as np
-import datetime
+import pandas as pd
+import seaborn as sns
+from matplotlib.ticker import FuncFormatter
+from scipy.interpolate import interp1d
+
+from tmp import formatter
 
 form = FuncFormatter(formatter)
 

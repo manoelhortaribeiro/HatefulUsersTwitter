@@ -1,11 +1,11 @@
-from LikeSheepsAmongWolves.crawler.neo4j_schema import *
-from py2neo import Graph, Relationship, NodeSelector
-from urllib.parse import urlparse
-from datetime import datetime
-import random
-import tweepy
 import json
 import os
+import random
+from datetime import datetime
+from urllib.parse import urlparse
+
+import tweepy
+from py2neo import Graph, Relationship, NodeSelector
 
 
 class MHCrawler:

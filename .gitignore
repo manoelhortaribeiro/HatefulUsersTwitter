@@ -1,9 +1,8 @@
-LikeSheepsAmongWolves/secrets/twitter_neo4jsecret.json
-LikeSheepsAmongWolves/secrets/twitter_secrets.json
-LikeSheepsAmongWolves/data/*
-LikeSheepsAmongWolves/imgs/*
-YouAreFakeNews/secrets/twitter_neo4jsecret.json
-YouAreFakeNews/secrets/twitter_secrets.json
+secrets/twitter_neo4jsecret.json
+secrets/twitter_secrets.json
+classification/GraphSAGE/example_data/*
+data/*
+imgs/*
 .ipynb_checkpoints
 __pycache__/
 .idea/

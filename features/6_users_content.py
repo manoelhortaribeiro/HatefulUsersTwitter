@@ -1,7 +1,8 @@
-from LikeSheepsAmongWolves.tmp.utils import cols_attr, cols_glove, cols_empath
 import networkx as nx
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from tmp import cols_attr, cols_glove, cols_empath
 
 # Gets mean and median between tweets
 tweets = pd.read_csv("../data/preprocessing/tweets.csv")

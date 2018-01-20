@@ -1,9 +1,11 @@
-from LikeSheepsAmongWolves.tmp.utils import cols_attr, cols_glove, cols_empath, graph_attributes
-from networkx.readwrite import json_graph
-import networkx as nx
-import pandas as pd
-import numpy as np
 import json
+
+import networkx as nx
+import numpy as np
+import pandas as pd
+from networkx.readwrite import json_graph
+
+from tmp import cols_attr, cols_glove
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = makes new mapping  = = = = = = = = = = = = = = = = = =
 # df = pd.read_csv("../data/users_all.csv", index_col=0)
@@ -129,7 +131,7 @@ f.close()
 
 df = pd.read_csv("../data/users_all.csv")
 
-feats = df[cols_glove].values
+feats = df[cols_attr + cols_glove].values
 
 # # Logistic gets thrown off by big counts, so log transform num comments and score
 # for i in [0, 1, 2, 3, 4, 5]:
