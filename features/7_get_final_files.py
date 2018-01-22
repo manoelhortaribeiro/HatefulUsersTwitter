@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from networkx.readwrite import json_graph
 
-from tmp import cols_attr, cols_glove
+from tmp.utils import cols_attr, cols_glove
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = makes new mapping  = = = = = = = = = = = = = = = = = =
 # df = pd.read_csv("../data/users_all.csv", index_col=0)
@@ -48,8 +48,7 @@ from tmp import cols_attr, cols_glove
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = graph sage input = = = = = = = = = = = = = = = = = = = = =
 
-df = pd.read_csv("../data/users_anon.csv",  usecols=["user_id", "hate"])
-graph = nx.read_graphml("../data/users_clean.graphml")
+df = pd.read_csv("../data/users_anon.csv", usecols=["user_id", "hate"])
 
 # Makes -class_map.json
 
@@ -68,53 +67,55 @@ json.dump(class_map, f)
 f.close()
 
 # Makes -G.json
-
+np.random.seed(123)
 hateful = df[df.hate == "hateful"][["user_id"]]
-train_h = hateful.sample(int(len(hateful)*4/5), axis=0)
-test_h = hateful[hateful.apply(lambda x: x.values.tolist() not in train_h.values.tolist(), axis=1)]
+hateful = hateful.sample(frac=1)
+hateful_splits = np.array_split(hateful, 10)
 normal = df[df.hate == "normal"][["user_id"]]
-train_n = normal.sample(int(len(normal)*4/5), axis=0)
-test_n = normal[normal.apply(lambda x: x.values.tolist() not in train_n.values.tolist(), axis=1)]
+normal = normal.sample(frac=1)
+normal_splits = np.array_split(normal, 10)
 
-train = pd.concat([train_h, train_n])
+for fold in range(5):
 
-print(len(train.index))
-test = pd.concat([test_h, test_n])
-print(len(test.index))
+    train = pd.concat(hateful_splits[:fold] + hateful_splits[fold+1:] +
+                      normal_splits[:fold] + normal_splits[fold+1:])
+    test = pd.concat([hateful_splits[fold]] + [normal_splits[fold]])
 
-val_d, test_d = dict(), dict()
+    val_d, test_d = dict(), dict()
 
-for user_id in df["user_id"].values:
-    val_d[str(user_id)] = False
-    test_d[str(user_id)] = True
+    graph = nx.read_graphml("../data/users_clean.graphml")
 
-for user_id in test["user_id"].values:
-    val_d[str(user_id)] = True
-    test_d[str(user_id)] = False
+    for user_id in df["user_id"].values:
+        val_d[str(user_id)] = False
+        test_d[str(user_id)] = True
 
-for user_id in train["user_id"].values:
-    val_d[str(user_id)] = False
-    test_d[str(user_id)] = False
+    for user_id in test["user_id"].values:
+        val_d[str(user_id)] = True
+        test_d[str(user_id)] = False
 
-nx.set_node_attributes(graph, values=val_d, name='val')
-nx.set_node_attributes(graph, values=test_d, name='test')
-nx.set_edge_attributes(graph, values=False, name='test_removed')
-nx.set_edge_attributes(graph, values=False, name='train_removed')
+    for user_id in train["user_id"].values:
+        val_d[str(user_id)] = False
+        test_d[str(user_id)] = False
 
-graph = nx.DiGraph(graph)
-data = json_graph.node_link_data(graph)
-data["directed"] = True
+    nx.set_node_attributes(graph, values=val_d, name='val')
+    nx.set_node_attributes(graph, values=test_d, name='test')
+    nx.set_edge_attributes(graph, values=False, name='test_removed')
+    nx.set_edge_attributes(graph, values=False, name='train_removed')
 
-for i in range(len(data["nodes"])):
-    data["nodes"][i]['id'] = int(data["nodes"][i]['id'])
+    graph = nx.DiGraph(graph)
+    data = json_graph.node_link_data(graph)
+    data["directed"] = True
 
-for i in range(len(data["links"])):
-    data["links"][i]['target'] = int(data["links"][i]['target'])
-    data["links"][i]['source'] = int(data["links"][i]['source'])
+    for i in range(len(data["nodes"])):
+        data["nodes"][i]['id'] = int(data["nodes"][i]['id'])
 
-f = open("../data/graph-input/users_anon-G.json", "w")
-json.dump(data, f)
-f.close()
+    for i in range(len(data["links"])):
+        data["links"][i]['target'] = int(data["links"][i]['target'])
+        data["links"][i]['source'] = int(data["links"][i]['source'])
+
+    f = open("../data/graph-input/users_anon{0}-G.json".format(fold), "w")
+    json.dump(data, f)
+    f.close()
 
 # Makes -id_map.json
 
@@ -129,9 +130,9 @@ f.close()
 
 # Makes -feats.npy
 
-df = pd.read_csv("../data/users_all.csv")
+df = pd.read_csv("../data/users_anon.csv")
 
-feats = df[cols_attr + cols_glove].values
+feats = df[cols_glove].values
 
 # # Logistic gets thrown off by big counts, so log transform num comments and score
 # for i in [0, 1, 2, 3, 4, 5]:

@@ -106,7 +106,7 @@ class SupervisedGraphsage(models.SampleAndAggregate):
                 self.loss += FLAGS.weight_decay * tf.nn.l2_loss(var)
         for var in self.node_pred.vars.values():
             self.loss += FLAGS.weight_decay * tf.nn.l2_loss(var)
-        classes_weights = tf.constant([18.0, 1.0])
+        classes_weights = tf.constant([FLAGS.w1, FLAGS.w2])
         self.loss += tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=self.node_preds,
                                                                  targets=self.placeholders['labels'],
                                                                  pos_weight=classes_weights))

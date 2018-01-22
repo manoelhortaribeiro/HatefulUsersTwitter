@@ -9,7 +9,7 @@ from matplotlib.ticker import FuncFormatter
 from seaborn.algorithms import bootstrap
 from seaborn.utils import ci
 
-from tmp import formatter
+from tmp.utils import formatter
 
 form = FuncFormatter(formatter)
 
@@ -95,7 +95,7 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
 f.legend((rects[0], rects[1], rects[2], rects[3], rects[4], rects[5]),
-         ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'Non-Suspended'),
+         ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'Active'),
          loc='upper center',
          fancybox=True, shadow=True, ncol=6)
 f.tight_layout(rect=[0, 0, 1, .95])

@@ -8,21 +8,23 @@ import os
 
 import networkx as nx
 from networkx.readwrite import json_graph
+
 version_info = map(int, nx.__version__.split('.'))
 major = version_info[0]
 minor = version_info[1]
 assert (major <= 1) and (minor <= 11), "networkx major version > 1.11"
 
-WALK_LEN=5
-N_WALKS=50
+WALK_LEN = 5
+N_WALKS = 50
 
-def load_data(prefix, normalize=True, load_walks=False):
-    G_data = json.load(open(prefix + "-G.json"))
+
+def load_data(prefix, fold, normalize=True, load_walks=False):
+    G_data = json.load(open(prefix + "{0}-G.json".format(fold)))
     G = json_graph.node_link_graph(G_data)
     if isinstance(G.nodes()[0], int):
-        conversion = lambda n : int(n)
+        conversion = lambda n: int(n)
     else:
-        conversion = lambda n : n
+        conversion = lambda n: n
 
     if os.path.exists(prefix + "-feats.npy"):
         feats = np.load(prefix + "-feats.npy")
@@ -30,15 +32,15 @@ def load_data(prefix, normalize=True, load_walks=False):
         print("No features present.. Only identity features will be used.")
         feats = None
     id_map = json.load(open(prefix + "-id_map.json"))
-    id_map = {conversion(k):int(v) for k,v in id_map.items()}
+    id_map = {conversion(k): int(v) for k, v in id_map.items()}
     walks = []
     class_map = json.load(open(prefix + "-class_map.json"))
     if isinstance(list(class_map.values())[0], list):
-        lab_conversion = lambda n : n
+        lab_conversion = lambda n: n
     else:
-        lab_conversion = lambda n : int(n)
+        lab_conversion = lambda n: int(n)
 
-    class_map = {conversion(k):lab_conversion(v) for k,v in class_map.items()}
+    class_map = {conversion(k): lab_conversion(v) for k, v in class_map.items()}
 
     ## Remove all nodes that do not have val/test annotations
     ## (necessary because of networkx weirdness with the Reddit data)
@@ -54,7 +56,7 @@ def load_data(prefix, normalize=True, load_walks=False):
     print("Loaded data.. now preprocessing..")
     for edge in G.edges():
         if (G.node[edge[0]]['val'] or G.node[edge[1]]['val'] or
-            G.node[edge[0]]['test'] or G.node[edge[1]]['test']):
+                G.node[edge[0]]['test'] or G.node[edge[1]]['test']):
             G[edge[0]][edge[1]]['train_removed'] = True
         else:
             G[edge[0]][edge[1]]['train_removed'] = False
@@ -66,13 +68,14 @@ def load_data(prefix, normalize=True, load_walks=False):
         scaler = StandardScaler()
         scaler.fit(train_feats)
         feats = scaler.transform(feats)
-    
+
     if load_walks:
         with open(prefix + "-walks.txt") as fp:
             for line in fp:
                 walks.append(map(conversion, line.split()))
 
     return G, feats, id_map, walks, class_map
+
 
 def run_random_walks(G, nodes, num_walks=N_WALKS):
     pairs = []
@@ -85,11 +88,12 @@ def run_random_walks(G, nodes, num_walks=N_WALKS):
                 next_node = random.choice(G.neighbors(curr_node))
                 # self co-occurrences are useless
                 if curr_node != node:
-                    pairs.append((node,curr_node))
+                    pairs.append((node, curr_node))
                 curr_node = next_node
         if count % 1000 == 0:
             print("Done walks for", count, "nodes")
     return pairs
+
 
 if __name__ == "__main__":
     """ Run random walks """

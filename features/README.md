@@ -6,3 +6,4 @@ that can be used to transform the data we collected and the annotations to featu
 - A brief description of the scripts:
 
     - `1_average_interval.py`
+    

@@ -5,7 +5,7 @@ import scipy.stats as stats
 import seaborn as sns
 from matplotlib.ticker import FuncFormatter
 
-from tmp import formatter
+from tmp.utils import formatter
 
 form = FuncFormatter(formatter)
 
@@ -45,8 +45,8 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         for category, color in zip(men, color_mine):
             tmp.append(category[attribute].values)
 
-        sns.boxplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8,
-                    boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)
+        sns.violinplot(data=tmp, palette=color_mine, showfliers=False, ax=axis, orient="v", width=0.8, linewidth=.5,
+                       inner="box")
 
         ind = np.array([0, 1, 2, 3])
         _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False, nan_policy='omit')

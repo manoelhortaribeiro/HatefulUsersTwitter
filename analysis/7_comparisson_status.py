@@ -4,8 +4,11 @@ import pandas as pd
 import seaborn as sns
 from matplotlib.ticker import FuncFormatter
 from scipy.interpolate import interp1d
+import scipy.stats as stats
 
-from tmp import formatter
+from tmp.utils import formatter
+
+
 
 form = FuncFormatter(formatter)
 
@@ -16,7 +19,7 @@ color_mine = ["#71BC78", "#4F7942"]
 
 df = pd.read_csv("../data/users_anon.csv")
 
-f, axzs = plt.subplots(2, 3, figsize=(5.4, 3), sharex=True)
+f, axzs = plt.subplots(2, 3, figsize=(5.4, 3), sharey=True)
 boxprops = dict(linewidth=0.3)
 whiskerprops = dict(linewidth=0.3)
 capprops = dict(linewidth=0.3)
@@ -35,33 +38,44 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
     for axis, attribute, title in zip(axs, attributes, titles):
         N = 4
-        men = [df[df.is_63], df[(df.is_63_2 == True) & (df.is_63 == False)]]
+        men = [df[(df.is_63_2 == False) & (df.is_63 == True)], df[(df.is_63_2 == True) & (df.is_63 == False)]]
 
         medians, medians_ci = [], []
         averages, averages_ci = [], []
-        rects = []
+        tmp = []
 
         for category, color, leg in zip(men, color_mine, legend):
-            x = np.linspace(1, 100, num=len(category[attribute].values), endpoint=True)
-            y = sorted(category[attribute].values, reverse=True)
-            y = np.array(y).cumsum()
-            fx = interp1d(x, y)
-            x2 = np.linspace(1, 100, num=100, endpoint=True)
-            y2 = np.array(fx(x2))
+            x = np.array(sorted(category[attribute].values))
+            tmp.append(category[attribute].values)
 
-            rect = axis.plot(x2, y2, color=color, label=leg)
+            y = x.cumsum()
+            y = y / y[-1]
+            x10 = x[::2]
+            y10 = y[::2]
+
+            rect = axis.plot(x10, y10, color=color, label=leg, lw=1)
+
+        _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False, nan_policy='omit')
+        print(stats.ks_2samp(tmp[0], tmp[1]))
+
+        print(title)
+        print(n_h)
+
         ind = np.array([0, 1])
 
-        axis.yaxis.set_major_formatter(form)
+        axis.xaxis.set_major_formatter(form)
 
-        axis.set_xticks([1, 50, 100])
+        axis.set_yticks([0, 0.25, 0.5, .75, 1])
         axis.set_title(title)
         axis.set_xlabel("")
 
         axis.set_ylabel("")
+        # axis.set_xscale("log")
 
-        if title in ["betweenness", "eigenvector", "out degree"]:
-            axis.set_xlabel("\% Users")
+        # axis.legend().set_visible(False)
+
+        # if title in ["betweenness", "eigenvector", "out degree"]:
+        #     axis.set_xlabel("\% Users")
 
 f.legend(loc='upper center', fancybox=True, shadow=True, ncol=2)
 f.tight_layout(rect=[0, 0, 1, .95])

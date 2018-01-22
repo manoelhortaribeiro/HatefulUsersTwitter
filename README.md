@@ -2,10 +2,8 @@
 
 This folder contains the data and the analysis done in the paper:
 
-    "Like Sheep Among Wolves": 
-    Characterizing Hateful Users on Twitter
-        Manoel Horta Ribeiro, Pedro H Calais, Yuri A Santos, 
-        Virgílio AF Almeida, Wagner Meira Jr
+    "Like Sheep Among Wolves":  Characterizing Hateful Users on Twitter
+    Manoel Horta Ribeiro, Pedro H Calais, Yuri A Santos,  Virgílio AF Almeida, Wagner Meira Jr
     to be presented @ MIS2 workshop at WSDM'18
 
 ## Folder Structure

@@ -108,3 +108,4 @@ The `eval_scripts` directory contains examples of feeding the embeddings into si
 The original version of this code base was originally forked from https://github.com/tkipf/gcn/, and we owe many thanks to Thomas Kipf for making his code available.
 We also thank Yuanfang Li and Xin Li who contributed to a course project that was based on this work.
 Please see the [paper](https://arxiv.org/pdf/1706.02216.pdf) for funding details and additional (non-code related) acknowledgements.
+
