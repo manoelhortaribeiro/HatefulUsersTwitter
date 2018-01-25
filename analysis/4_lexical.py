@@ -14,7 +14,7 @@ form = FuncFormatter(formatter)
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89",  "#FFFACD", "#EFCC00"]
+color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89", "#FFFACD", "#EFCC00"]
 
 df = pd.read_csv("../data/users_anon.csv")
 
@@ -28,16 +28,16 @@ df["baddies"] = df["baddies"] / (df["tweet number"] + df["retweet number"] + df[
 
 f, axzs = plt.subplots(3, 7, figsize=(10.8, 4))
 
-attributes_all = [["sadness_empath", "fear_empath", "swearing_terms_empath", "independence_empath",
+attributes_all = [["sadness_empath", "swearing_terms_empath", "independence_empath",
                    "positive_emotion_empath", "negative_emotion_empath", "government_empath", "love_empath"],
-                   ["warmth_empath", "ridicule_empath", "masculine_empath", "feminine_empath",
+                  ["ridicule_empath", "masculine_empath", "feminine_empath",
                    "violence_empath", "suffering_empath", "dispute_empath", "anger_empath"],
-                   ["envy_empath", "work_empath", "leader_empath", "politics_empath",
+                  ["envy_empath", "work_empath", "politics_empath",
                    "terrorism_empath", "shame_empath", "confusion_empath", "hate_empath"]]
 
-titles_all = [["Sadness", "Fear", "Swearing", "Independence", "Pos. Emotions", "Neg. Emotions", "Government", "Love"],
-              ["Warmth", "Ridicule", "Masculine", "Feminine", "Violence", "Suffering", "Dispute", "Anger"],
-              ["Envy", "Work", "Leader", "Politics", "Terrorism", "Shame", "Confusion", "Hate"]]
+titles_all = [["Sadness", "Swearing", "Independence", "Pos. Emotions", "Neg. Emotions", "Government", "Love"],
+              ["Ridicule", "Masculine", "Feminine", "Violence", "Suffering", "Dispute", "Anger"],
+              ["Envy", "Work", "Politics", "Terrorism", "Shame", "Confusion", "Hate"]]
 
 for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 

@@ -15,7 +15,7 @@ form = FuncFormatter(formatter)
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
-color_mine = ["#71BC78", "#4F7942"]
+color_mine = ["#71BC78", "#4F7942", "#71BC78", "#4F7942"]
 
 df = pd.read_csv("../data/users_anon.csv")
 
@@ -31,14 +31,18 @@ attributes_all = [["statuses_count", "followers_count", "followees_count"],
 titles_all = [["\#statuses", "\#followers", "\#followees"],
               ["betweenness", "eigenvector", "out degree"]]
 
-legend = ['Banned before 12/12 ', 'Banned after 12/12']
+legend = ['Banned before 12/12 ', 'Banned after 12/12', "Hateful \& Suspended", "Normal \& Suspended"]
 
 first = True
 for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
 
     for axis, attribute, title in zip(axs, attributes, titles):
         N = 4
-        men = [df[(df.is_63_2 == False) & (df.is_63 == True)], df[(df.is_63_2 == True) & (df.is_63 == False)]]
+        men = [df[(df.is_63_2 == False) & (df.is_63 == True)],
+               df[(df.is_63_2 == True) & (df.is_63 == False)],
+               df[(df.is_63_2 == True) & (df.hate == "hateful")],
+               df[(df.is_63_2 == False) & (df.hate == "hateful")]
+               ]
 
         medians, medians_ci = [], []
         averages, averages_ci = [], []
@@ -56,10 +60,13 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
             rect = axis.plot(x10, y10, color=color, label=leg, lw=1)
 
         _, n_h = stats.ttest_ind(tmp[0], tmp[1], equal_var=False, nan_policy='omit')
-        print(stats.ks_2samp(tmp[0], tmp[1]))
+        _, hs_ns = stats.ttest_ind(tmp[2], tmp[3], equal_var=False, nan_policy='omit')
 
         print(title)
+        print(stats.ks_2samp(tmp[0], tmp[1])[1])
+        print(stats.ks_2samp(tmp[2], tmp[3])[1])
         print(n_h)
+        print(hs_ns)
 
         ind = np.array([0, 1])
 
