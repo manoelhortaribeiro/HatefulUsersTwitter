@@ -21,27 +21,27 @@ print(mixing)
 print(" hate  -> hate   ",
       mixing["hateful"]["hateful"] /
       (mixing["hateful"]["other"] + mixing["hateful"]["normal"] + mixing["hateful"]["hateful"])
-      / (544 / 4972))
+      / (544 / 100386))
 print(" hate  -> normal ", mixing["hateful"]["normal"] /
       (mixing["hateful"]["other"] + mixing["hateful"]["normal"] + mixing["hateful"]["hateful"])
-      / (4427 / 4972))
+      / (4427 / 100386))
 print("normal -> normal ", mixing["normal"]["normal"] /
       (mixing["normal"]["other"] + mixing["normal"]["normal"] + mixing["normal"]["hateful"])
-      / (4427 / 4972))
+      / (4427 / 100386))
 print("normal -> hate   ", mixing["normal"]["hateful"] /
       (mixing["normal"]["other"] + mixing["normal"]["normal"] + mixing["normal"]["hateful"])
-      / (544 / 4972))
+      / (544 / 100386))
 
 mixing = attribute_mixing_dict(g, "susp")
 print(mixing)
 print(" susp  -> susp   ", mixing[True][True] / (mixing[True][True] + mixing[True][False])
-      /(668 / 100386))
+      ) #/(668 / 100386))
 print(" susp  -> active ", mixing[True][False] / (mixing[True][True] + mixing[True][False])
-      /(99718/100386))
+      ) #/(99718/100386))
 print("active -> active ", mixing[False][False] / (mixing[False][True] + mixing[False][False])
-      /(99718/100386))
-print("active -> susp   ", mixing[False][False] / (mixing[False][True] + mixing[False][False])
-      /(668 / 100386))
+      ) #/(99718/100386))
+print("active -> susp   ", mixing[False][True] / (mixing[False][True] + mixing[False][False])
+      ) #/(668 / 100386))
 
 del g
 
