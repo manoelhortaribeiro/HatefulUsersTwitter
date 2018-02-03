@@ -1,80 +1,54 @@
-## Users
-user_id,hate,hate_neigh,normal_neigh,statuses_count,followers_count,followees_count,favorites_count,listed_count,betweenness,eigenvector,in_degree,out_degree
+# Description of files
 
-There is an anonymized and non-anonymized version, contains the following attributes (despite the ID):
+- `user.edges` file with all the (directed) edges in the retweet graph.
 
-    user_id                  - unique identifier from the user
-    hate                     - ("hateful"|"normal"|"other"), other is non-annotated
-    hate_neigh               - (True|False) - is it in the neighborhood of hateful?
-    normal_neigh             - (True|False) - is it in the neighborhood of normal?
-    statuses_count           - #Tweets
-    follower_count           - #Followers
-    followees_count          - #Followees
-    favorites_count          - #Favorites
-    listed_count             - #Listed
-    betweenness              - Betwennes centrality, calculated in the RT graph
-    eigenvector              - Eigenvector centrality,  "        "  "  "   "
-    in_degree                - In Degree centrality,    "        "  "  "   "
-    out_degree               - Out Degree centrality,   "        "  "  "   "
-    *_empath                 - 100+ empath categories
-    *_glove                  - 300 dim glove vector
-    sentiment                - sentiment score,         
-    subjectivity             - subjectivity score
-    number hashtags          - #hashtags/tweet
-    hashtags                 - actual hashtags
-    tweet number             - %direct tweets
-    retweet number           - %retweets
-    quote number             - %quote tweets
-    status length            - length of the statuses
-    number urls              - number of urls per tweet in average
-    baddies                  - number of bad words in average
-    mentions                 - number of mentions in average
-    is_50                    - was deleted up to 12/12/17
-    is_63                    - was suspended up to 12/12/17
-    is_50_2                  - was deleted up to 14/01/18
-    is_63_2                  - was suspended up to 14/01/18
-    time_diff                - average time diff between tweets
-    time_diff_median         - median time diff between tweets
+- `users_clean.graphml` networkx compatible file with retweet network.
 
-There is also a version with the average attributes for their neighborhood in the graph, which have additional attributes (the same), with a `c_` prefix.
+- `users_anon_neighborhood.csv`  file with several features for each user as well as the avg for some features for their 1-neighborhood (ppl they tweeted). Notice that `c_` are attributes calculated for the 1-neighborhood of a user in the retweet network (averaged out).     
+        
+      >> hate :("hateful"|"normal"|"other")
+      if user was annotated as hateful, normal, or not annotated.
+      
+      >> (is_50|is_50_2) :bool
+      whether user was deleted up to 12/12/17 or 14/01/18. 
     
-    
-
-## Tweets
-\* Available upon request
-
-19536788 tweets from 100,386 users. Up to 200 for each users.
-
-Features:
-
-    screen_name       - screename of the user on twitter
-    tweet_id          - number with the identifier of a the tweet
-    tweet_text        - if status is a tweet/quote, the text written
-    tweet_creation    - date in unix time when the tweet was tweeted
-    tweet_fav         - number of favorites
-    tweet_rt          - number of retweets
-    rp_flag           - flag that indicates if the tweet is a reply
-    rp_status         - id of the replied status
-    rp_user           - id of the replied user
-    qt_flag           - flag that indicates if the tweet is a quote
-    qt_user_id        - id of the quoted user
-    qt_status_id      - id of the quoted status
-    qt_text           - text of the quoted status
-    qt_creation       - date of creation of the quoted status
-    qt_fav            - number of favorites of the quoted status
-    qt_rt             - number of retweets of the quoted status
-    rt_flag           - flag that indicates if a tweet is a retweet
-    rt_user_id        - id of the retweeted user
-    rt_status_id      - id of the retweeted status
-    rt_text           - text of the retweeted status
-    rt_creation       - creation date of the retweeted status
-    rt_fav            - number of favorites of the retweeted status
-    rt_rt             - number of retweets of the retweeted status
-    
-## Graph
-
-There is a networkx file with only the edges and IDs (anonymized) (user_clean.graphml) 
-
-There is a networkx file with only the edges and IDs non_anon (user_clean_d.graphml) 
-
-Also there are extra files for the GraphSage, on folders `hate` and `suspended`.
+      >> (is_63|is_63_2) :bool
+      whether user was suspended up to 12/12/17 or 14/01/18. 
+                  
+      >> (hate|normal)_neigh :bool
+      is the user on the neighborhood of a (hateful|normal) user? 
+      
+      >> [c_] (statuses|follower|followees|favorites)_count :int
+      number of (tweets|follower|followees|favorites) a user has.
+      
+      >> [c_] listed_count:int
+      number of lists a user is in.
+              
+      >> [c_] (betweenness|eigenvector|in_degree|outdegree) :float
+      centrality measurements for each user in the retweet graph.
+      
+      >> [c_] *_empath :float
+      occurrences of empath categories in the users latest 200 tweets.
+      
+      >> [c_] *_glove :float          
+      glove vector calculated for users latest 200 tweets.
+      
+      >> [c_] (sentiment|subjectivity) :float
+      average sentiment and subjectivity of users tweets.
+      
+      >> [c_] (time_diff|time_diff_median) :float
+      average and median time difference between tweets.
+      
+      >> [c_] (tweet|retweet|quote) number :float
+      percentage of direct tweets, retweets and quotes of an user.
+     
+      >> [c_] (number urls|number hashtags|baddies|mentions) : float
+      number of bad words|mentions|urls|hashtags per tweet in average.
+      
+      >> [c_] status length :float
+      average status length.
+       
+      >> hashtags :string
+      all hashtags employed by the user separated by spaces.
+      
+If you're keen on the original tweets, contact me :).

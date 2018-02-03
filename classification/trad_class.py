@@ -7,22 +7,6 @@ from sklearn.preprocessing import StandardScaler
 from tmp.utils import cols_attr, cols_glove
 
 
-def performance(y_true, y_pred, name, write_flag=False, print_flag=False):
-    fpr, tpr, _ = roc_curve(y_true, y_pred)
-
-    output = "%s, " \
-             "F1-Score     %0.4f\n" % \
-             (name,
-              f1_score(y_true, y_pred))
-
-    if write_flag:
-        f = open("./data/results_{0}.txt".format(name), "w")
-        f.write(output)
-        f.close()
-    if print_flag:
-        print(output, end="")
-
-
 def eval_gb(flag_x1, flag_x2, flag_y):
     df = pd.read_csv("../data/users_neighborhood_anon.csv")
     df.fillna(0, inplace=True)
@@ -89,14 +73,6 @@ def eval_gb(flag_x1, flag_x2, flag_y):
         accuracy_test.append(accuracy_score(y_true, y_pred))
         recall_test.append(recall_score(y_true, y_pred, pos_label=1))
 
-        # print(confusion_matrix(y_true, y_pred))
-        # print("Accuracy   %0.4f" % accuracy_test[-1])
-        # print("Recall   %0.4f" % recall_test[-1])
-        # print("AUC   %0.4f" % auc_test[-1])
-
-        # print(f1_train[-1])
-        # print(f1_test[-1])
-
     accuracy_test = np.array(accuracy_test)
     recall_test = np.array(recall_test)
     auc_test = np.array(auc_test)
@@ -105,11 +81,6 @@ def eval_gb(flag_x1, flag_x2, flag_y):
     print("Recall    %0.4f +-  %0.4f" % (recall_test.mean(), recall_test.std()))
     print("AUC    %0.4f +-  %0.4f" % (auc_test.mean(), auc_test.std()))
 
-
-# eval_gb("save", "", "hn")
-# eval_gb("save", "", "sa")
-#
-# exit()
 
 for flag_model in ["gradientboost", "adaboost"]:
     for flag_features in ["all", "glove"]:

@@ -15,7 +15,7 @@ plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
 color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89",  "#FFFACD", "#EFCC00"]
 
-df = pd.read_csv("../data/users_anon.csv")
+df = pd.read_csv("../data/users_neighborhood_anon.csv")
 
 f, axzs = plt.subplots(2, 3, figsize=(5.4, 3))
 boxprops = dict(linewidth=0.3)

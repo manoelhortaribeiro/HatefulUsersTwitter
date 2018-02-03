@@ -16,7 +16,7 @@ plt.rc('text', usetex=True)
 sns.set(style="whitegrid", font="serif")
 color_mine = ["#F8414A", "#5676A1", "#FD878D", "#385A89", "#FFFACD", "#EFCC00"]
 
-df = pd.read_csv("../data/users_anon.csv")
+df = pd.read_csv("../data/users_neighborhood_anon.csv")
 
 df["tweet_number"] = df["tweet number"] / (df["tweet number"] + df["retweet number"] + df["quote number"])
 df["retweet_number"] = df["retweet number"] / (df["tweet number"] + df["retweet number"] + df["quote number"])

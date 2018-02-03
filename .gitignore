@@ -1,9 +1,9 @@
-classification/GraphSAGE/example_data/*
 secrets/twitter_neo4jsecret.json
 secrets/twitter_secrets.json
 .ipynb_checkpoints
 __pycache__/
-data/users_*
+data/users*
+data/tweets_*
 data/preprocessing/tweets.csv
 data/preprocessing/users*
 data/graph-input/users*
@@ -14,6 +14,4 @@ data/extra/deleted_account_after_guideline.csv
 data/extra/users_created_at.csv
 data/extra/annotated_full.csv
 data/extra/created_at.csv
-imgs/*
 .idea/
-imgs/
