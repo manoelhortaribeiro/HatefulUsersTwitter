@@ -12,6 +12,6 @@ those are placed in the `../secrets/` folder.
 
 - During the data collection there was actually a bug that jeopardized the collection of users 
 creation date. Thus the creation dates were actually extracted using the script in 
-`../tmp/created_at.py`
+`../tmp/created_at.py`.
 
 [1]:http://ieeexplore.ieee.org/abstract/document/6195540/

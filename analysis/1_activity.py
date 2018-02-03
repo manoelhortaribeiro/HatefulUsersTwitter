@@ -91,8 +91,8 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.set_title(title)
         axis.set_ylabel("")
         axis.set_xlabel("")
-        axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#5c5c5c")
-        axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#5c5c5c")
+        axis.axvline(1.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
+        axis.axvline(3.5, ls='dashed', linewidth=0.3, color="#C0C0C0")
 
 f.legend((rects[0], rects[1], rects[2], rects[3], rects[4], rects[5]),
          ('Hateful User', 'Normal User', 'Hateful Neigh.', 'Normal Neigh.', 'Suspended', 'Active'),

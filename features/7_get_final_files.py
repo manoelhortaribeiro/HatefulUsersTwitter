@@ -1,52 +1,67 @@
-import json
-
-import networkx as nx
-import numpy as np
-import pandas as pd
-from networkx.readwrite import json_graph
-from sklearn.model_selection import train_test_split
-from tmp.utils import cols_attr, cols_glove
-
+from tmp.utils import cols_attr, cols_glove, graph_attributes
 from sklearn.preprocessing import StandardScaler
+import networkx as nx
+import pandas as pd
+import numpy as np
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = makes new mapping  = = = = = = = = = = = = = = = = = =
-# df = pd.read_csv("../data/users_all.csv", index_col=0)
-#
-# old_index = df.index
-#
-# df.index = np.array(range(len(df.index)))
-# df.index.name = "user_id"
-#
-# new_index = df.index
-#
-# df.to_csv("../data/users_anon.csv")
-#
-# df = pd.read_csv("../data/users_all_neighborhood.csv", index_col=0)
-#
-# df.index = np.array(range(len(df.index)))
-# df.index.name = "user_id"
-#
-# df.to_csv("../data/users_neighborhood_anon.csv")
+# # = = = = = = = = = = = = = = = = = = = = = = = = = = = = makes new mapping  = = = = = = = = = = = = = = = = = =
+
+df = pd.read_csv("../data/users_all.csv", index_col=0)
+
+old_index = df.index
+
+df.index = np.array(range(len(df.index)))
+df.index.name = "user_id"
+
+new_index = df.index
+
+new_idx_dict = dict()
+
+for i, j in zip(old_index, new_index):
+    new_idx_dict[i] = j
+
+df.to_csv("../data/users_anon.csv")
+
+df = pd.read_csv("../data/users_all_neighborhood.csv", index_col=0)
+
+df.index = np.array(range(len(df.index)))
+df.index.name = "user_id"
+
+df.to_csv("../data/users_neighborhood_anon.csv")
+
+tweets_df = pd.read_csv("../data/preprocessing/tweets.csv")
+
+new_user_ids = []
+
+for i in tweets_df["user_id"]:
+    new_user_ids.append(new_idx_dict[i])
+
+tweets_df["user_id"] = new_user_ids
+
+tweets_df.to_csv("../data/tweets_anon.csv", index=False)
+
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = cleans graph = = = = = = = = = = = = = = = = = = = = =
-# graph = nx.read_graphml("../data/users_hate.graphml")
-#
-# for user_id in graph.nodes():
-#
-#     for att in graph_attributes:
-#
-#         if att in graph.node[user_id]:
-#             del graph.node[user_id][att]
-#
-# df = pd.read_csv("../data/users_all.csv",  usecols=["user_id"])
-#
-# mapping = dict()
-# for old_idx, new_idx in zip(df["user_id"].values, np.array(range(len(df["user_id"].values)))):
-#     mapping[str(old_idx)] = int(new_idx)
-#
-# graph = nx.relabel_nodes(graph, mapping)
-#
-# nx.write_graphml(graph, "../data/users_clean.graphml")
+
+graph = nx.read_graphml("../data/features/users_hate.graphml")
+
+for user_id in graph.nodes():
+
+    for att in graph_attributes:
+
+        if att in graph.node[user_id]:
+            del graph.node[user_id][att]
+
+
+df = pd.read_csv("../data/users_all.csv",  usecols=["user_id"])
+
+mapping = dict()
+for old_idx, new_idx in zip(df["user_id"].values, np.array(range(len(df["user_id"].values)))):
+    mapping[str(old_idx)] = int(new_idx)
+
+graph = nx.relabel_nodes(graph, mapping)
+
+nx.write_graphml(graph, "../data/users_clean.graphml")
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = graph sage input = = = = = = = = = = = = = = = = = = = = =
 

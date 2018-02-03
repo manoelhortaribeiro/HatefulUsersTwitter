@@ -4,7 +4,7 @@ import scipy.stats as stats
 import seaborn as sns
 from matplotlib.ticker import FuncFormatter
 
-from tmp import formatter
+from tmp.utils import formatter
 
 form = FuncFormatter(formatter)
 

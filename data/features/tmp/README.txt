@@ -1,0 +1,1 @@
+Auxiliary folder to make the feature extraction in parallel.

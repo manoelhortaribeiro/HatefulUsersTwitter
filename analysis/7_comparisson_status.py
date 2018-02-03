@@ -77,12 +77,7 @@ for axs, attributes, titles in zip(axzs, attributes_all, titles_all):
         axis.set_xlabel("")
 
         axis.set_ylabel("")
-        # axis.set_xscale("log")
 
-        # axis.legend().set_visible(False)
-
-        # if title in ["betweenness", "eigenvector", "out degree"]:
-        #     axis.set_xlabel("\% Users")
 
 f.legend(loc='upper center', fancybox=True, shadow=True, ncol=2)
 f.tight_layout(rect=[0, 0, 1, .95])

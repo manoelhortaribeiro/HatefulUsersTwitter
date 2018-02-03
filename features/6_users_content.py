@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-from tmp import cols_attr, cols_glove, cols_empath
+from tmp.utils import cols_attr, cols_glove, cols_empath
 
 # Gets mean and median between tweets
 tweets = pd.read_csv("../data/preprocessing/tweets.csv")
@@ -58,5 +58,3 @@ df2.to_csv("../data/features/users_neighborhood.csv", index=False)
 
 df3 = pd.merge(left=df, right=df2, on="user_id", how="left")
 df3.to_csv("../data/features/users_all_neighborhood.csv", index=False)
-
-
