@@ -4,7 +4,7 @@ import networkx as nx
 import pandas as pd
 import numpy as np
 
-# # = = = = = = = = = = = = = = = = = = = = = = = = = = = = makes new mapping  = = = = = = = = = = = = = = = = = =
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = makes new mapping  = = = = = = = = = = = = = = = = = =
 
 df = pd.read_csv("../data/users_all.csv", index_col=0)
 
@@ -123,4 +123,3 @@ for glove_feats, id_v, sus_v in zip(feats, ids, suspended):
     f.write("\t".join(row))
     f.write("\n")
 f.close()
-
