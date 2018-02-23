@@ -33,6 +33,8 @@ And the following files on Kaggle:
 
 - `users_anon_neighborhood.csv`  file with several features for each user as well as the avg for some features for their 1-neighborhood (ppl they tweeted). Notice that `c_` are attributes calculated for the 1-neighborhood of a user in the retweet network (averaged out).
 
+## Attributes description
+
       hate :("hateful"|"normal"|"other")
       if user was annotated as hateful, normal, or not annotated.
       
