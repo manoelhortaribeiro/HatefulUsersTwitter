@@ -42,7 +42,7 @@
       >> [c_] (tweet|retweet|quote) number :float
       percentage of direct tweets, retweets and quotes of an user.
      
-      >> [c_] (number urls|number hashtags|baddies|mentions) : float
+      >> [c_] (number urls|number hashtags|baddies|mentions) :float
       number of bad words|mentions|urls|hashtags per tweet in average.
       
       >> [c_] status length :float
