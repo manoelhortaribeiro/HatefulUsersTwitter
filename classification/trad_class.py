@@ -1,14 +1,14 @@
-import numpy as np
-import pandas as pd
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier
-from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, f1_score
+from sklearn.metrics import accuracy_score, roc_curve, auc, f1_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import StandardScaler
 from tmp.utils import cols_attr, cols_glove
+import pandas as pd
+import numpy as np
 
 
 def eval_gb(flag_x1, flag_x2, flag_y):
-    df = pd.read_csv("../data/users_neighborhood_anon.csv")
+    df = pd.read_csv("../data/users_all_neighborhood.csv")
     df.fillna(0, inplace=True)
 
     if flag_y == "hn":
@@ -71,14 +71,14 @@ def eval_gb(flag_x1, flag_x2, flag_y):
         fpr, tpr, _ = roc_curve(y_true, y_pred_proba_test)
         auc_test.append(auc(fpr, tpr))
         accuracy_test.append(accuracy_score(y_true, y_pred))
-        recall_test.append(recall_score(y_true, y_pred, pos_label=1))
+        recall_test.append(f1_score(y_true, y_pred, pos_label=1))
 
     accuracy_test = np.array(accuracy_test)
     recall_test = np.array(recall_test)
     auc_test = np.array(auc_test)
 
     print("Accuracy   %0.4f +-  %0.4f" % (accuracy_test.mean(), accuracy_test.std()))
-    print("Recall    %0.4f +-  %0.4f" % (recall_test.mean(), recall_test.std()))
+    print("F1-Score    %0.4f +-  %0.4f" % (recall_test.mean(), recall_test.std()))
     print("AUC    %0.4f +-  %0.4f" % (auc_test.mean(), auc_test.std()))
 
 

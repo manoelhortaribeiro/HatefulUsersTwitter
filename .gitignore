@@ -4,9 +4,8 @@ secrets/twitter_secrets.json
 __pycache__/
 data/users*
 data/tweets_*
-data/preprocessing/tweets.csv
-data/preprocessing/users*
-data/graph-input/users*
+data/preprocessing/
+data/graph-input/
 data/features/users*
 data/features/time_diff.csv
 data/extra/deleted_account_before_guideline.csv

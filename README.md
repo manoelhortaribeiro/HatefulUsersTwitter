@@ -4,11 +4,11 @@ This folder contains the data and the analysis done in the papers:
 
     "Like Sheep Among Wolves":  Characterizing Hateful Users on Twitter
     Manoel Horta Ribeiro, Pedro H Calais, Yuri A Santos,  Virgílio AF Almeida, Wagner Meira Jr
-    to be presented @ MIS2 workshop at WSDM'18
+    MIS2 workshop at WSDM'18
     
     Characterizing and Detecting Hateful Users on Twitter
     Manoel Horta Ribeiro, Pedro H Calais, Yuri A Santos,  Virgílio AF Almeida, Wagner Meira Jr
-    << under review >>
+    ICWSM'18
     
 The experiments with the *GraphSage* algorithm are in [another repository](https://github.com/manoelhortaribeiro/GraphSageHatefulUsers).
 
