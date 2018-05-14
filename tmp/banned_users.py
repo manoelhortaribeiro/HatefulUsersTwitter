@@ -10,6 +10,7 @@ def get_tweepy(accs, val):
     oauth.set_access_token(auth["access_token"], auth["access_secret"])
     return tweepy.API(oauth)
 
+
 f = open("../secrets/twitter_secrets.json", 'r')
 tweepy_auth = json.load(f)
 accounts = list(tweepy_auth.items())
@@ -20,7 +21,6 @@ all_accs = 5
 df = pd.read_csv("../data/users_attributes.csv")
 ids = df.user_id.values
 crawl = get_tweepy(accounts, curr_account)
-
 
 deleted_accounts_50 = dict()
 deleted_accounts_63 = dict()
@@ -51,7 +51,6 @@ for user_id in ids:
             if exc.api_code == 63:
                 deleted_accounts_63[user_id] = True
                 break
-
 
 # f = open("../data/deleted_account_before_guideline.csv", "w")
 f = open("../data/deleted_account_after_guideline.csv", "w")

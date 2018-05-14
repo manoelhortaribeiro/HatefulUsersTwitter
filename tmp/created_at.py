@@ -10,6 +10,7 @@ def get_tweepy(accs, val):
     oauth.set_access_token(auth["access_token"], auth["access_secret"])
     return tweepy.API(oauth)
 
+
 f = open("../secrets/twitter_secrets.json", 'r')
 tweepy_auth = json.load(f)
 accounts = list(tweepy_auth.items())
@@ -21,9 +22,7 @@ df = pd.read_csv("../data/users_attributes.csv")
 ids = df.user_id.values
 crawl = get_tweepy(accounts, curr_account)
 
-
 creation_time = dict()
-
 
 count = 0
 for user_id in ids:
@@ -45,7 +44,6 @@ for user_id in ids:
 
             if exc.api_code == 50 or exc.api_code == 63:
                 break
-
 
 f = open("../data/created_at.csv", "w")
 csv_writer = csv.writer(f)
