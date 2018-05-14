@@ -8,7 +8,6 @@ import json
 import os
 
 
-
 class MHCrawler:
 
     def __init__(self, auth_tweepy, auth_neo4j, n, seed, next_node, w=50):
