@@ -4,9 +4,12 @@ import csv
 import re
 
 f = open("../secrets/twitter_neo4jsecret.json", 'r')
+
 config_neo4j = json.load(f)
 f.close()
 graph = Graph(config_neo4j["host"], password=config_neo4j["password"])
+
+print(graph)
 
 f = open("../data/preprocessing/tweets.csv", "w")
 csv_writer = csv.writer(f)
@@ -14,8 +17,8 @@ csv_writer = csv.writer(f)
 csv_writer.writerow(["user_id", "screen_name",
                      "tweet_id", "tweet_text", "tweet_creation", "tweet_fav", "tweet_rt",
                      "rp_flag", "rp_status", "rp_user",
-                     "qt_flag", "qt_user_id", "qt_status_id", "qt_text", "qt_creation", "qt_fav", "qt_rt",
-                     "rt_flag", "rt_user_id", "rt_status_id", "rt_text", "rt_creation", "rt_fav", "rt_rt"])
+                     "qt_flag", "qt_status_id", "qt_user_id", "qt_text", "qt_creation", "qt_fav", "qt_rt",
+                     "rt_flag", "rt_status_id", "rt_user_id", "rt_text", "rt_creation", "rt_fav", "rt_rt"])
 
 q = """MATCH (u:User) where u.virtual="F" return count(u) as number"""
 df = graph.data(q)
