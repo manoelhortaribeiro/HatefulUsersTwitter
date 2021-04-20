@@ -5,7 +5,8 @@ This folder contains the data and the analysis done in the paper:
 ~~~bibtex
 @inproceedings{horta_ribeiro_message_2019,
 title={Characterizing and Detecting Hateful Users on Twitter},
-author={Ribeiro, Manoel and Calais, Pedro and Santos, Yuri and Almeida, Virg{\'\i}lio and Meira Jr, Wagner},
+author={Horta Ribeiro, Manoel and Calais, Pedro and 
+        Santos, Yuri and Almeida, Virg{\'\i}lio and Meira Jr, Wagner},
 booktitle={Proceedings of the International AAAI Conference on Web and Social Media},
 year={2018}
 }
