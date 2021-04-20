@@ -1,14 +1,15 @@
 # Hateful Users on Twitter
 
-This folder contains the data and the analysis done in the papers:
+This folder contains the data and the analysis done in the paper:
 
-    "Like Sheep Among Wolves":  Characterizing Hateful Users on Twitter
-    Manoel Horta Ribeiro, Pedro H Calais, Yuri A Santos,  Virgílio AF Almeida, Wagner Meira Jr
-    MIS2 workshop at WSDM'18
-    
-    Characterizing and Detecting Hateful Users on Twitter
-    Manoel Horta Ribeiro, Pedro H Calais, Yuri A Santos,  Virgílio AF Almeida, Wagner Meira Jr
-    ICWSM'18
+~~~bibtex
+@inproceedings{horta_ribeiro_message_2019,
+title={Characterizing and Detecting Hateful Users on Twitter},
+author={Ribeiro, Manoel and Calais, Pedro and Santos, Yuri and Almeida, Virg{\'\i}lio and Meira Jr, Wagner},
+booktitle={Proceedings of the International AAAI Conference on Web and Social Media},
+year={2018}
+}
+~~~
     
 The experiments with the *GraphSage* algorithm are in [another repository](https://github.com/manoelhortaribeiro/GraphSageHatefulUsers).
 
@@ -79,10 +80,6 @@ And the following files on Kaggle:
       
       hashtags :string
       all hashtags employed by the user separated by spaces.
-
-
-
-If you're keen on the original tweets, contact me :).
 
 ## Folder Structure
 
